@@ -2,6 +2,15 @@
 changelog: true
 ```
 
+## 2.58.0
+
+`2025-11-13`
+
+### 🆕 新增功能
+
+- 新增属性 `show-fullscreen` 控制头部全屏按钮显示，配合 `v-model:fullscreen`
+- 文档新增「头部全屏切换」示例
+
 ## 2.57.0
 
 `2025-03-10`
@@ -420,4 +429,3 @@ changelog: true
 ### 🐛 问题修复
 
 - 修复主按钮类型错误的问题 ([#30](https://github.com/arco-design/arco-design-vue/pull/30))
-

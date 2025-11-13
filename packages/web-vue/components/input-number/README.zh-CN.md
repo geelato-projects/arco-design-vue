@@ -22,6 +22,8 @@ description: 仅允许输入数字格式的输入框。
 
 @import ./__demo__/model.md
 
+@import ./__demo__/readonly.md
+
 ## API
 
 
@@ -73,5 +75,4 @@ description: 仅允许输入数字格式的输入框。
 |prepend|前置标签|-|
 |suffix|后缀|-|
 |prefix|前缀|-|
-
 

@@ -15,11 +15,7 @@ export default ({ name }: { name: string }): InlineConfig => {
       minify: false,
       brotliSize: false,
       rollupOptions: {
-        external: [
-          'vue',
-          '@arco-design/web-vue',
-          '@arco-design/web-vue/es/icon',
-        ],
+        external: ['vue', '@geelato/web-vue', '@geelato/web-vue/es/icon'],
         output: [
           {
             format: 'umd',
@@ -27,8 +23,8 @@ export default ({ name }: { name: string }): InlineConfig => {
             sourcemap: true,
             globals: {
               'vue': 'Vue',
-              '@arco-design/web-vue': 'ArcoVue',
-              '@arco-design/web-vue/es/icon': 'ArcoVueIcon',
+              '@geelato/web-vue': 'GeelatoVue',
+              '@geelato/web-vue/es/icon': 'GeelatoVueIcon',
             },
           },
           {
@@ -37,8 +33,8 @@ export default ({ name }: { name: string }): InlineConfig => {
             sourcemap: true,
             globals: {
               'vue': 'Vue',
-              '@arco-design/web-vue': 'ArcoVue',
-              '@arco-design/web-vue/es/icon': 'ArcoVueIcon',
+              '@geelato/web-vue': 'GeelatoVue',
+              '@geelato/web-vue/es/icon': 'GeelatoVueIcon',
             },
             // @ts-ignore
             plugins: [terser()],

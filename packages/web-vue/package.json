@@ -1,6 +1,6 @@
 {
-  "name": "@arco-design/web-vue",
-  "version": "2.57.0",
+  "name": "@geelato/web-vue",
+  "version": "2.57.1",
   "description": "Arco Design Vue 2.0: A Vue.js 3 UI Library",
   "keywords": [
     "arco",
@@ -107,4 +107,8 @@
     "attributes": "json/vetur-attributes.json"
   },
   "web-types": "json/web-types.json"
+  ,
+  "publishConfig": {
+    "access": "public"
+  }
 }

@@ -392,6 +392,7 @@ export default defineComponent({
     };
 
     const handleInput = (value: string, ev: Event) => {
+      if (props.readOnly) return;
       value = value.trim().replace(/。/g, '.');
       value = props.parser?.(value) ?? value;
 
@@ -534,7 +535,7 @@ export default defineComponent({
           tabindex="-1"
           v-slots={{ icon: () => <IconMinus /> }}
           class={`${prefixCls}-step-button`}
-          disabled={mergedDisabled.value || isMin.value}
+          disabled={mergedDisabled.value || isMin.value || props.readOnly}
           // @ts-ignore
           onMousedown={(ev: MouseEvent) => handleStepButton(ev, 'minus', true)}
           onMouseup={clearRepeatTimer}
@@ -551,7 +552,7 @@ export default defineComponent({
           tabindex="-1"
           v-slots={{ icon: () => <IconPlus /> }}
           class={`${prefixCls}-step-button`}
-          disabled={mergedDisabled.value || isMax.value}
+          disabled={mergedDisabled.value || isMax.value || props.readOnly}
           // @ts-ignore
           onMousedown={(ev: MouseEvent) => handleStepButton(ev, 'plus', true)}
           onMouseup={clearRepeatTimer}

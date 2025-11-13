@@ -24,6 +24,8 @@ description: Only input boxes in numeric format are allowed.
 
 @import ./__demo__/model.md
 
+@import ./__demo__/readonly.md
+
 ## API
 
 
@@ -75,5 +77,4 @@ description: Only input boxes in numeric format are allowed.
 |prepend|Prepend|-|
 |suffix|Suffix|-|
 |prefix|Prefix|-|
-
 

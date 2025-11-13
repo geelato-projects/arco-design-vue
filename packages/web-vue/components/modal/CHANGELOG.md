@@ -2,6 +2,15 @@
 changelog: true
 ```
 
+## 2.58.0
+
+`2025-11-13`
+
+### 🆕 Feature
+
+- Add `show-fullscreen` to control header fullscreen button visibility; supports `v-model:fullscreen`
+- Add documentation demo "Header Fullscreen Toggle"
+
 ## 2.57.0
 
 `2025-03-10`
@@ -420,4 +429,3 @@ changelog: true
 ### 🐛 BugFix
 
 - Fix the problem of the wrong type of the main button ([#30](https://github.com/arco-design/arco-design-vue/pull/30))
-

@@ -1,0 +1,37 @@
+[
+  {
+    "title": "方向指示类图标",
+    "type": "direction",
+    "list": []
+  },
+  {
+    "title": "提示建议类图标",
+    "type": "tips",
+    "list": []
+  },
+  {
+    "title": "交互按钮类图标",
+    "type": "interactiveButton",
+    "list": []
+  },
+  {
+    "title": "编辑类图标",
+    "type": "edit",
+    "list": []
+  },
+  {
+    "title": "影音类图标",
+    "type": "media",
+    "list": []
+  },
+  {
+    "title": "商标类图标",
+    "type": "logo",
+    "list": []
+  },
+  {
+    "title": "通用类图标",
+    "type": "general",
+    "list": []
+  }
+]

@@ -5,12 +5,14 @@
 </div>
 
 <div align="center">
-  <h1>Arco Design</h1>
+  <h1>Geelato Web Vue</h1>
 </div>
 
 <div align="center">
 
-基于 [Arco Design](https://arco.design/) 的 Vue UI 组件库。
+基于 [Arco Design](https://arco.design/) 派生（fork）并按 Geelato 业务需求改造的 Vue UI 组件库。
+原始开源项目地址：https://github.com/arco-design/arco-design-vue。
+完整 API 与设计规范请参考官方文档；本仓库主要记录我们的改造与扩展，所有变更将同步至 `CHANGELOG.md`。
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/arco-design/arco-design-vue/blob/main/LICENSE)
 
@@ -41,26 +43,26 @@
 
 # 安装
 
-[npm package](https://www.npmjs.com/package/@arco-design/web-vue)
+[npm package](https://www.npmjs.com/package/@geelato/web-vue)
 
 ```bash
 // npm
-npm install @arco-design/web-vue
+npm install @geelato/web-vue
 
 // yarn
-yarn add @arco-design/web-vue
+yarn add @geelato/web-vue
 ```
 
 # 例子
 
 ```typescript
 import { createApp } from 'vue'
-import ArcoVue from '@arco-design/web-vue';
+import GeelatoVue from '@geelato/web-vue';
 import App from './App.vue';
-import '@arco-design/web-vue/dist/arco.css';
+import '@geelato/web-vue/dist/arco.css';
 
 const app = createApp(App);
-app.use(ArcoVue);
+app.use(GeelatoVue);
 app.mount('#app');
 ```
 
@@ -71,6 +73,10 @@ app.mount('#app');
 2. 使用 `yarn install` 安装 `workspaces` 中各个包的依赖（如果遇到 `YN0018` 错误，可以使用 `YARN_CHECKSUM_BEHAVIOR=update yarn` 进行安装）
 
 3. 使用 `npm run init` 初始化项目
+
+## 变更日志
+
+运行 `pnpm -F @geelato/web-vue run changelog` 生成并更新 `CHANGELOG.md`，请在每次功能变更或修复后及时维护变更记录（建议使用 Conventional Commits）。
 
 
 # 相关链接

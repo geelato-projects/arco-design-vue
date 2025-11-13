@@ -4,12 +4,14 @@
   </a>
 </div>
 <div align="center">
-  <h1>Arco Design</h1>
+  <h1>Geelato Web Vue</h1>
 </div>
 
 <div align="center">
 
-A comprehensive Vue UI components library based on the [Arco Design](https://arco.design/) system.
+Geelato's Vue UI library derived (forked) from the [Arco Design](https://arco.design/) project and customized for our business needs.
+Upstream project: https://github.com/arco-design/arco-design-vue.
+For full API and design specs, please refer to the upstream documentation. All modifications will be tracked in `CHANGELOG.md`.
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/arco-design/arco-design-vue/blob/main/LICENSE)
 
@@ -40,26 +42,26 @@ All components are written in TypeScript so it's type friendly.
 
 # Installation
 
-Available as an [npm package](https://www.npmjs.com/package/@arco-design/web-vue)
+Available as an [npm package](https://www.npmjs.com/package/@geelato/web-vue)
 
 ```bash
 // with npm
-npm install @arco-design/web-vue
+npm install @geelato/web-vue
 
 // with yarn
-yarn add @arco-design/web-vue
+yarn add @geelato/web-vue
 ```
 
 # Examples
 
 ```typescript
 import { createApp } from 'vue'
-import ArcoVue from '@arco-design/web-vue';
+import GeelatoVue from '@geelato/web-vue';
 import App from './App.vue';
-import '@arco-design/web-vue/dist/arco.css';
+import '@geelato/web-vue/dist/arco.css';
 
 const app = createApp(App);
-app.use(ArcoVue);
+app.use(GeelatoVue);
 app.mount('#app');
 ```
 
@@ -70,6 +72,10 @@ app.mount('#app');
 2. Use `yarn install` to install the dependencies of each package in `workspaces` (If you encounter a `YN0018` error, you can use `YARN_CHECKSUM_BEHAVIOR=update yarn` to install)
 
 3. Use `npm run init` to initialize the project
+
+## Changelog
+
+Run `pnpm -F @geelato/web-vue run changelog` to generate and update `CHANGELOG.md`. Please keep changelog entries up to date for every feature change or fix (Conventional Commits recommended).
 
 # Useful Links
 

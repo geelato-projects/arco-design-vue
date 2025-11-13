@@ -19,11 +19,7 @@ const getConfig = ({
       emptyOutDir: true,
       minify: false,
       rollupOptions: {
-        external: [
-          'vue',
-          '@arco-design/web-vue',
-          '@arco-design/web-vue/es/icon',
-        ],
+        external: ['vue', '@geelato/web-vue', '@geelato/web-vue/es/icon'],
         output: [
           {
             format: 'module',
@@ -40,8 +36,8 @@ const getConfig = ({
             name,
             globals: {
               'vue': 'Vue',
-              '@arco-design/web-vue': 'ArcoVue',
-              '@arco-design/web-vue/es/icon': 'ArcoVueIcon',
+              '@geelato/web-vue': 'GeelatoVue',
+              '@geelato/web-vue/es/icon': 'GeelatoVueIcon',
             },
             // @ts-ignore
             plugins: [terser()],

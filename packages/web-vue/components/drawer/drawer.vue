@@ -24,11 +24,31 @@
           @after-enter="handleOpen"
           @after-leave="handleClose"
         >
-          <div v-show="computedVisible" :class="prefixCls" :style="style">
+          <div
+            v-show="computedVisible"
+            :class="[
+              prefixCls,
+              { [`${prefixCls}-fullscreen`]: mergedFullscreen },
+            ]"
+            :style="style"
+          >
             <div v-if="header" :class="`${prefixCls}-header`">
               <slot name="header">
                 <div v-if="$slots.title || title" :class="`${prefixCls}-title`">
                   <slot name="title">{{ title }}</slot>
+                </div>
+                <div
+                  v-if="showFullscreen"
+                  tabindex="-1"
+                  role="button"
+                  aria-label="Fullscreen"
+                  :class="`${prefixCls}-fullscreen-btn`"
+                  @click="toggleFullscreen"
+                >
+                  <icon-hover>
+                    <icon-fullscreen v-if="!mergedFullscreen" />
+                    <icon-fullscreen-exit v-else />
+                  </icon-hover>
                 </div>
                 <div
                   v-if="closable"
@@ -89,6 +109,8 @@ import ClientOnly from '../_components/client-only';
 import ArcoButton, { ButtonProps } from '../button';
 import IconHover from '../_components/icon-hover.vue';
 import IconClose from '../icon/icon-close';
+import IconFullscreen from '../icon/icon-fullscreen';
+import IconFullscreenExit from '../icon/icon-fullscreen-exit';
 import { useI18n } from '../locale';
 import { useOverflow } from '../_hooks/use-overflow';
 import { off, on } from '../_utils/dom';
@@ -107,6 +129,8 @@ export default defineComponent({
     ArcoButton,
     IconHover,
     IconClose,
+    IconFullscreen,
+    IconFullscreenExit,
   },
   inheritAttrs: false,
   props: {
@@ -315,9 +339,18 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    fullscreen: {
+      type: Boolean,
+      default: false,
+    },
+    showFullscreen: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: {
     'update:visible': (visible: boolean) => true,
+    'update:fullscreen': (fullscreen: boolean) => true,
     /**
      * @zh 点击确定按钮时触发
      * @en Triggered when the OK button is clicked
@@ -375,7 +408,11 @@ export default defineComponent({
     const { t } = useI18n();
 
     const _visible = ref(props.defaultVisible);
+    const _fullscreen = ref(props.fullscreen);
     const computedVisible = computed(() => props.visible ?? _visible.value);
+    const mergedFullscreen = computed(
+      () => props.fullscreen ?? _fullscreen.value
+    );
     const _okLoading = ref(false);
     const mergedOkLoading = computed(() => props.okLoading || _okLoading.value);
 
@@ -476,6 +513,12 @@ export default defineComponent({
       }
     };
 
+    const toggleFullscreen = () => {
+      const next = !mergedFullscreen.value;
+      _fullscreen.value = next;
+      emit('update:fullscreen', next);
+    };
+
     const handleMask = (e: Event) => {
       if (props.maskClosable) {
         handleCancel(e);
@@ -526,6 +569,15 @@ export default defineComponent({
       }
     });
 
+    watch(
+      () => props.fullscreen,
+      (val) => {
+        if (_fullscreen.value !== val) {
+          _fullscreen.value = !!val;
+        }
+      }
+    );
+
     const style = computed(() => {
       const style: CSSProperties = {
         [props.placement]: 0,
@@ -556,6 +608,8 @@ export default defineComponent({
       handleMask,
       isFixed,
       teleportContainer,
+      mergedFullscreen,
+      toggleFullscreen,
     };
   },
 });

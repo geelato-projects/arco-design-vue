@@ -18,6 +18,8 @@ description: 触发命令后，从屏幕一侧滑出的抽屉式的面板。
 
 @import ./__demo__/function.md
 
+@import ./__demo__/fullscreen.md
+
 ## API
 
 
@@ -51,6 +53,8 @@ description: 触发命令后，从屏幕一侧滑出的抽屉式的面板。
 |header|是否展示头部内容|`boolean`|`true`|2.33.0|
 |footer|是否展示底部内容|`boolean`|`true`|2.11.0|
 |hide-cancel|是否隐藏取消按钮|`boolean`|`false`|2.19.0|
+|fullscreen **(v-model)**|是否开启全屏|`boolean`|`false`||
+|show-fullscreen|是否显示头部全屏按钮|`boolean`|`false`||
 ### `<drawer>` Events
 
 |事件名|描述|参数|版本|
@@ -138,5 +142,3 @@ Drawer._context = app._context;
 |参数名|描述|类型|默认值|
 |---|---|---|:---:|
 |open|打开抽屉|`(config: DrawerConfig, appContext?: AppContext) => DrawerReturn`|`-`|
-
-

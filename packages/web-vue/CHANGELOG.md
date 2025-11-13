@@ -2,6 +2,23 @@
 changelog: true
 ```
 
+## 2.58.0
+
+`2025-11-13`
+
+### 🆕 Feature
+
+- **drawer:** Add fullscreen support with `v-model:fullscreen` and header toggle button `show-fullscreen`; add demo "Header Fullscreen Toggle"
+- **modal:** Add `show-fullscreen` to control header fullscreen button visibility; supports `v-model:fullscreen`; add demo "Header Fullscreen Toggle"
+
+## 2.57.1
+
+`2025-11-12`
+
+### 📝 Docs
+
+- forked from `arco-design/arco-design-vue` and renamed to `@geelato/web-vue`; upstream docs and API references remain in the official repository.
+
 ## 2.57.0
 
 `2025-03-10`

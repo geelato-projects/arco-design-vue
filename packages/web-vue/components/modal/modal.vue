@@ -58,6 +58,19 @@
                   <slot name="title">{{ title }}</slot>
                 </div>
                 <div
+                  v-if="!simple && showFullscreen"
+                  tabindex="-1"
+                  role="button"
+                  aria-label="Fullscreen"
+                  :class="`${prefixCls}-fullscreen-btn`"
+                  @click="toggleFullscreen"
+                >
+                  <icon-hover>
+                    <icon-fullscreen v-if="!mergedFullscreen" />
+                    <icon-fullscreen-exit v-else />
+                  </icon-hover>
+                </div>
+                <div
                   v-if="!simple && closable"
                   tabindex="-1"
                   role="button"
@@ -117,6 +130,8 @@ import ClientOnly from '../_components/client-only';
 import IconHover from '../_components/icon-hover.vue';
 import ArcoButton, { ButtonProps } from '../button';
 import IconClose from '../icon/icon-close';
+import IconFullscreen from '../icon/icon-fullscreen';
+import IconFullscreenExit from '../icon/icon-fullscreen-exit';
 import IconInfoCircleFill from '../icon/icon-info-circle-fill';
 import IconCheckCircleFill from '../icon/icon-check-circle-fill';
 import IconExclamationCircleFill from '../icon/icon-exclamation-circle-fill';
@@ -137,6 +152,8 @@ export default defineComponent({
     ArcoButton,
     IconHover,
     IconClose,
+    IconFullscreen,
+    IconFullscreenExit,
     IconInfoCircleFill,
     IconCheckCircleFill,
     IconExclamationCircleFill,
@@ -372,6 +389,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    showFullscreen: {
+      type: Boolean,
+      default: false,
+    },
     /**
      * @zh 遮罩层动画名字
      * @en Mask layer animation name
@@ -435,6 +456,7 @@ export default defineComponent({
   },
   emits: {
     'update:visible': (visible: boolean) => true,
+    'update:fullscreen': (fullscreen: boolean) => true,
     /**
      * @zh 点击确定按钮时触发
      * @en Triggered when the OK button is clicked
@@ -491,6 +513,10 @@ export default defineComponent({
     const computedVisible = computed(() => props.visible ?? _visible.value);
     const _okLoading = ref(false);
     const mergedOkLoading = computed(() => props.okLoading || _okLoading.value);
+    const _fullscreen = ref(props.fullscreen);
+    const mergedFullscreen = computed(
+      () => props.fullscreen ?? _fullscreen.value
+    );
     const mergedDraggable = computed(
       () => props.draggable && !props.fullscreen
     );
@@ -674,7 +700,16 @@ export default defineComponent({
       if (position.value) {
         position.value = undefined;
       }
+      if (_fullscreen.value !== fullscreen.value) {
+        _fullscreen.value = !!fullscreen.value;
+      }
     });
+
+    const toggleFullscreen = () => {
+      const next = !mergedFullscreen.value;
+      _fullscreen.value = next;
+      emit('update:fullscreen', next);
+    };
 
     const wrapperCls = computed(() => [
       `${prefixCls}-wrapper`,
@@ -691,7 +726,7 @@ export default defineComponent({
       {
         [`${prefixCls}-simple`]: props.simple,
         [`${prefixCls}-draggable`]: mergedDraggable.value,
-        [`${prefixCls}-fullscreen`]: props.fullscreen,
+        [`${prefixCls}-fullscreen`]: mergedFullscreen.value,
       },
     ]);
 
@@ -735,6 +770,8 @@ export default defineComponent({
       modalCls,
       teleportContainer,
       handleMoveDown,
+      mergedFullscreen,
+      toggleFullscreen,
     };
   },
 });

@@ -2,9 +2,24 @@
 changelog: true
 ```
 
-## 2.57.0
+## 2.58.0
 
-`2025-03-10`
+`2025-11-13`
+
+### 🆕 新增功能
+
+- **drawer:** 新增全屏能力：支持 `v-model:fullscreen` 与头部按钮 `show-fullscreen`；文档新增「头部全屏切换」示例
+- **modal:** 新增属性 `show-fullscreen` 控制头部全屏按钮显示，支持 `v-model:fullscreen`；文档新增「头部全屏切换」示例
+
+## 2.57.1
+
+`2025-11-12`
+
+### 📝 文档
+
+- 基于 `arco-design/arco-design-vue` fork 并改造，包名改为 `@geelato/web-vue`；完整 API 与规范请参考上游官方文档。
+
+## 2.57.0
 
 ### 🆕 新增功能
 

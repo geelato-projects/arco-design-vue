@@ -54,6 +54,13 @@
       font-size: @drawer-font-size-close-icon;
       cursor: pointer;
     }
+
+    .@{drawer-prefix-cls}-fullscreen-btn {
+      margin-left: 8px;
+      color: @drawer-color-header-text;
+      font-size: @drawer-font-size-close-icon;
+      cursor: pointer;
+    }
   }
 
   &-footer {
@@ -77,6 +84,11 @@
     overflow: auto;
     color: @drawer-color-content-text;
   }
+}
+
+.@{drawer-prefix-cls}-fullscreen {
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .fade-drawer-enter-from,
