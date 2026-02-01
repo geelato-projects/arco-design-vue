@@ -77,6 +77,7 @@
                   {{ cancelText || t('drawer.cancelText') }}
                 </arco-button>
                 <arco-button
+                  v-if="!hideOk"
                   type="primary"
                   :loading="mergedOkLoading"
                   v-bind="okButtonProps"
@@ -336,6 +337,14 @@ export default defineComponent({
      * @version 2.19.0
      */
     hideCancel: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * @zh 是否隐藏确定按钮
+     * @en Whether to hide the ok button
+     */
+    hideOk: {
       type: Boolean,
       default: false,
     },

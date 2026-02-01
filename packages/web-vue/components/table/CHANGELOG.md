@@ -2,6 +2,14 @@
 changelog: true
 ```
 
+## 2.58.4
+
+`2025-12-18`
+
+### 🐛 BugFix
+
+- Fix the issue where the checkbox column is not fixed in the virtual list
+
 ## 2.57.0
 
 `2025-03-10`

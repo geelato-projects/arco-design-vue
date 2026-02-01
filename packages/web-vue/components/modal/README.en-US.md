@@ -25,7 +25,6 @@ description: Open a floating layer on the current page to carry related operatio
 @import ./__demo__/draggable.md
 
 @import ./__demo__/fullscreen.md
-@import ./__demo__/fullscreen-toggle.md
 
 ## API
 
@@ -63,8 +62,6 @@ description: Open a floating layer on the current page to carry related operatio
 |esc-to-close|Whether to support the ESC key to close the dialog|`boolean`|`true`|2.15.0|
 |draggable|Whether to support drag|`boolean`|`false`|2.19.0|
 |fullscreen|Whether to enable full screen|`boolean`|`false`|2.19.0|
-|show-fullscreen|Whether to show the header fullscreen button|`boolean`|`false`||
-|show-fullscreen|Whether to show the header fullscreen button|`boolean`|`false`||
 |mask-animation-name|Mask layer animation name|`string`|`-`|2.24.0|
 |modal-animation-name|Modal animation name|`string`|`-`|2.24.0|
 |body-class|The classname of the modal|`string \| any[]`|`-`|2.31.0|
@@ -172,3 +169,5 @@ Modal._context = app._context;
 |success|Open success modal|`(config: ModalConfig, appContext?: AppContext) => ModalReturn`|`-`|
 |warning|Open warning modal|`(config: ModalConfig, appContext?: AppContext) => ModalReturn`|`-`|
 |error|Open error modal|`(config: ModalConfig, appContext?: AppContext) => ModalReturn`|`-`|
+
+

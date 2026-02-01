@@ -28,7 +28,7 @@ const TD_TYPES = [
   'radio',
   'expand',
 ] as const;
-type TdTypes = typeof TD_TYPES[number];
+type TdTypes = (typeof TD_TYPES)[number];
 
 export default defineComponent({
   name: 'Td',
@@ -143,13 +143,13 @@ export default defineComponent({
     };
 
     const style = computed(() => {
-      const style = getStyle(props.column, {
+      const fixedStyle = getStyle(props.column, {
         dataColumns: props.dataColumns,
         operations: props.operations,
       });
       const customStyle = getCustomStyle();
       return {
-        ...style,
+        ...fixedStyle,
         ...props.column?.cellStyle,
         ...customStyle,
       };

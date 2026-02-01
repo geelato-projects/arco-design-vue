@@ -42,9 +42,11 @@ export const useRowSelection = ({
       rowSelection.value?.selectedRowKeys ??
       _selectedRowKeys.value
   );
-  const currentSelectedRowKeys = computed(() =>
-    selectedRowKeys.value.filter((key) => currentAllRowKeys.value.includes(key))
-  );
+  const currentAllRowKeySet = computed(() => new Set(currentAllRowKeys.value));
+  const currentSelectedRowKeys = computed(() => {
+    const allKeySet = currentAllRowKeySet.value;
+    return selectedRowKeys.value.filter((key) => allKeySet.has(key));
+  });
 
   const handleSelectAll = (checked: boolean) => {
     const newKeys = union(

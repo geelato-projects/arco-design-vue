@@ -22,8 +22,6 @@ description: 仅允许输入数字格式的输入框。
 
 @import ./__demo__/model.md
 
-@import ./__demo__/readonly.md
-
 ## API
 
 
@@ -42,6 +40,7 @@ description: 仅允许输入数字格式的输入框。
 |min|最小值|`number`|`-Infinity`||
 |formatter|定义输入框展示值|`func`|`-`||
 |parser|从 `formatter` 转换为数字，和 `formatter` 搭配使用|`func`|`-`||
+|show-group-separator|是否展示进位分隔符（如 `1,200.00`）|`boolean`|`false`|2.59.1|
 |placeholder|输入框提示文字|`string`|`-`||
 |hide-button|是否隐藏按钮|`boolean`|`false`||
 |size|输入框大小|`'mini' \| 'small' \| 'medium' \| 'large'`|`'medium'`||
@@ -49,6 +48,7 @@ description: 仅允许输入数字格式的输入框。
 |model-event|触发 `v-model` 的事件|`'change' \| 'input'`|`'change'`||
 |read-only|只读|`boolean`|`false`|2.33.1|
 |input-attrs|内部 input 元素的属性|`object`|`-`|2.52.0|
+|keyboard|是否启用键盘快捷行为|`boolean`|`true`||
 ### `<input-number>` Events
 
 |事件名|描述|参数|版本|
@@ -75,4 +75,5 @@ description: 仅允许输入数字格式的输入框。
 |prepend|前置标签|-|
 |suffix|后缀|-|
 |prefix|前缀|-|
+
 

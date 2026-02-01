@@ -23,7 +23,6 @@ description: 在当前页面打开一个浮层，承载相关操作。
 @import ./__demo__/draggable.md
 
 @import ./__demo__/fullscreen.md
-@import ./__demo__/fullscreen-toggle.md
 
 ## API
 
@@ -61,8 +60,6 @@ description: 在当前页面打开一个浮层，承载相关操作。
 |esc-to-close|是否支持 ESC 键关闭对话框|`boolean`|`true`|2.15.0|
 |draggable|是否支持拖动|`boolean`|`false`|2.19.0|
 |fullscreen|是否开启全屏|`boolean`|`false`|2.19.0|
-|show-fullscreen|是否显示头部全屏按钮|`boolean`|`false`||
-|show-fullscreen|是否显示头部全屏按钮|`boolean`|`false`||
 |mask-animation-name|遮罩层动画名字|`string`|`-`|2.24.0|
 |modal-animation-name|对话框动画名字|`string`|`-`|2.24.0|
 |body-class|对话框内容部分的类名|`string \| any[]`|`-`|2.31.0|
@@ -170,3 +167,5 @@ Modal._context = app._context;
 |success|打开成功对话框|`(config: ModalConfig, appContext?: AppContext) => ModalReturn`|`-`|
 |warning|打开警告对话框|`(config: ModalConfig, appContext?: AppContext) => ModalReturn`|`-`|
 |error|打开错误对话框|`(config: ModalConfig, appContext?: AppContext) => ModalReturn`|`-`|
+
+

@@ -6,19 +6,38 @@ title:
 
 ## zh-CN
 
-通过 `formatter` 和 `parser` 配合使用可以定义输入框展示值。
+通过 `show-group-separator` 可以展示进位分隔符（如 `1,200.00`）。如需自定义格式，可通过 `formatter` 和 `parser` 配合使用定义输入框展示值。
 
 ---
 
 ## en-US
 
-Use `formatter` and `parser` together to define the display value of the input box.
+Use `show-group-separator` to display the group separator (e.g. `1,200.00`). If you need a custom format, use `formatter` and `parser` together.
 
 ---
 
 ```vue
 <template>
-  <a-input-number :style="{width:'320px'}" placeholder="Please Enter" class="input-demo" :default-value="12000" :min="0" :formatter="formatter" :parser="parser"/>
+  <a-space direction="vertical" size="large">
+    <a-input-number
+      :style="{ width: '320px' }"
+      placeholder="Please Enter"
+      class="input-demo"
+      :default-value="1200"
+      :min="0"
+      :precision="2"
+      show-group-separator
+    />
+    <a-input-number
+      :style="{ width: '320px' }"
+      placeholder="Please Enter"
+      class="input-demo"
+      :default-value="12000"
+      :min="0"
+      :formatter="formatter"
+      :parser="parser"
+    />
+  </a-space>
 </template>
 
 <script>

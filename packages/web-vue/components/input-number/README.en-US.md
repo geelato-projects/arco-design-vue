@@ -24,8 +24,6 @@ description: Only input boxes in numeric format are allowed.
 
 @import ./__demo__/model.md
 
-@import ./__demo__/readonly.md
-
 ## API
 
 
@@ -44,6 +42,7 @@ description: Only input boxes in numeric format are allowed.
 |min|Min|`number`|`-Infinity`||
 |formatter|Define the display value of the input|`func`|`-`||
 |parser|Convert from `formatter` to number, and use with `formatter`|`func`|`-`||
+|show-group-separator|Whether to display the group separator (e.g. `1,200.00`)|`boolean`|`false`|2.59.1|
 |placeholder|Input prompt text|`string`|`-`||
 |hide-button|Whether to hide the button|`boolean`|`false`||
 |size|Input size|`'mini' \| 'small' \| 'medium' \| 'large'`|`'medium'`||
@@ -51,6 +50,7 @@ description: Only input boxes in numeric format are allowed.
 |model-event|Trigger event for `v-model`|`'change' \| 'input'`|`'change'`||
 |read-only|Readonly|`boolean`|`false`|2.33.1|
 |input-attrs|Attributes of inner input elements|`object`|`-`|2.52.0|
+|keyboard|Whether to enable keyboard shortcuts|`boolean`|`true`||
 ### `<input-number>` Events
 
 |Event Name|Description|Parameters|version|
@@ -77,4 +77,5 @@ description: Only input boxes in numeric format are allowed.
 |prepend|Prepend|-|
 |suffix|Suffix|-|
 |prefix|Prefix|-|
+
 

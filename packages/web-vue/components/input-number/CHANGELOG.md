@@ -2,6 +2,22 @@
 changelog: true
 ```
 
+## 2.59.1
+
+`2026-01-16`
+
+### 🆕 Feature
+
+- Add `show-group-separator` prop to display group separator and support comma-formatted input
+
+## 2.59.0
+
+`2026-01-09`
+
+### 🆕 Feature
+
+- Add `keyboard` attribute to enable/disable keyboard interaction
+
 ## 2.56.3
 
 `2024-10-25`
@@ -246,4 +262,3 @@ changelog: true
 ### 🐛 BugFix
 
 - Fix the problem of invalid accuracy ([#93](https://github.com/arco-design/arco-design-vue/pull/93))
-

@@ -20,8 +20,6 @@ description: A drawer-like panel that slides out from the side of the screen aft
 
 @import ./__demo__/function.md
 
-@import ./__demo__/fullscreen.md
-
 ## API
 
 
@@ -55,8 +53,6 @@ description: A drawer-like panel that slides out from the side of the screen aft
 |header|Whether to display high-quality content|`boolean`|`true`|2.33.0|
 |footer|Whether to display the bottom content|`boolean`|`true`|2.11.0|
 |hide-cancel|Whether to hide the cancel button|`boolean`|`false`|2.19.0|
-|fullscreen **(v-model)**|Whether to enable full screen|`boolean`|`false`||
-|show-fullscreen|Whether to show the header fullscreen button|`boolean`|`false`||
 ### `<drawer>` Events
 
 |Event Name|Description|Parameters|version|
@@ -144,3 +140,5 @@ Drawer._context = app._context;
 |Name|Description|Type|Default|
 |---|---|---|:---:|
 |open|Open drawer|`(config: DrawerConfig, appContext?: AppContext) => DrawerReturn`|`-`|
+
+

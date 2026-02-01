@@ -56,7 +56,7 @@ import { collapseInjectionKey } from './context';
 import AsideNav from './components/aside-nav/index.vue';
 import { getLocalStorage, setLocalStorage } from './utils/local-storage';
 import ThemeBox from './components/theme-box/index.vue';
-// import Locale from '@arco-design/web-vue/es/locale';
+// import Locale from '@geelato/web-vue/es/locale';
 // import { getLocalStorage, setLocalStorage } from './utils/local-storage';
 
 export default defineComponent({

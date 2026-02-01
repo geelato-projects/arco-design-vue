@@ -381,16 +381,24 @@ export const getLeafKeys = (record: TableDataWithRaw) => {
 };
 
 export const getSelectionStatus = (
-  selectedRowKeys: BaseType[],
+  selectedRowKeys: BaseType[] | Set<BaseType>,
   leafKeys: BaseType[]
 ) => {
   let checked = false;
   let indeterminate = false;
-  const selectedLeafKeys = leafKeys.filter((key) =>
-    selectedRowKeys.includes(key)
-  );
-  if (selectedLeafKeys.length > 0) {
-    if (selectedLeafKeys.length >= leafKeys.length) {
+
+  const selectedSet =
+    selectedRowKeys instanceof Set ? selectedRowKeys : new Set(selectedRowKeys);
+
+  let selectedLeafCount = 0;
+  for (const key of leafKeys) {
+    if (selectedSet.has(key)) {
+      selectedLeafCount += 1;
+    }
+  }
+
+  if (selectedLeafCount > 0) {
+    if (selectedLeafCount >= leafKeys.length) {
       checked = true;
     } else {
       indeterminate = true;

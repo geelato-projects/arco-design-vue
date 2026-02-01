@@ -102,6 +102,15 @@ export default defineComponent({
       type: Function,
     },
     /**
+     * @zh 是否展示进位分隔符（如 `1,200.00`）
+     * @en Whether to display the group separator (e.g. `1,200.00`)
+     * @version 2.59.1
+     */
+    showGroupSeparator: {
+      type: Boolean,
+      default: false,
+    },
+    /**
      * @zh 输入框提示文字
      * @en Input prompt text
      */
@@ -155,6 +164,14 @@ export default defineComponent({
      */
     inputAttrs: {
       type: Object,
+    },
+    /**
+     * @zh 是否启用键盘快捷行为
+     * @en Whether to enable keyboard shortcuts
+     */
+    keyboard: {
+      type: Boolean,
+      default: true,
     },
   },
   emits: {
@@ -254,6 +271,38 @@ export default defineComponent({
       return undefined;
     });
 
+    const parseValue = (value: string) => {
+      const parsed = props.parser?.(value) ?? value.replace(/[,，]/g, '');
+      return String(parsed).trim();
+    };
+
+    const formatGroupSeparator = (value: string) => {
+      if (!value || /^(\.|-)$/.test(value)) {
+        return value;
+      }
+
+      const negative = value[0] === '-';
+      const normalized = negative ? value.slice(1) : value;
+      const [intPart, decimalPart] = normalized.split('.');
+
+      const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+      const hasDot = normalized.includes('.');
+      const formatted = hasDot
+        ? `${formattedInt}.${decimalPart ?? ''}`
+        : formattedInt;
+
+      return negative ? `-${formatted}` : formatted;
+    };
+
+    const formatValue = (value: string) => {
+      const formatted = props.formatter?.(value) ?? value;
+      if (!props.formatter && props.showGroupSeparator) {
+        return formatGroupSeparator(formatted);
+      }
+      return formatted;
+    };
+
     const getStringValue = (number: number | undefined) => {
       if (!isNumber(number)) {
         return '';
@@ -262,7 +311,7 @@ export default defineComponent({
       const numString = mergedPrecision.value
         ? number.toFixed(mergedPrecision.value)
         : String(number);
-      return props.formatter?.(numString) ?? numString;
+      return formatValue(numString);
     };
 
     // inner input value to display
@@ -272,7 +321,7 @@ export default defineComponent({
       if (!_value.value) {
         return undefined;
       }
-      const number = Number(props.parser?.(_value.value) ?? _value.value);
+      const number = Number(parseValue(_value.value));
       return Number.isNaN(number) ? undefined : number;
     });
 
@@ -394,10 +443,16 @@ export default defineComponent({
     const handleInput = (value: string, ev: Event) => {
       if (props.readOnly) return;
       value = value.trim().replace(/。/g, '.');
-      value = props.parser?.(value) ?? value;
+      const parsedValue = parseValue(value);
 
-      if (isNumber(Number(value)) || /^(\.|-)$/.test(value)) {
-        _value.value = props.formatter?.(value) ?? value;
+      if (isNumber(Number(parsedValue)) || /^(\.|-)$/.test(parsedValue)) {
+        if (props.formatter || props.showGroupSeparator) {
+          _value.value = formatValue(parsedValue);
+        } else if (props.parser) {
+          _value.value = parsedValue;
+        } else {
+          _value.value = value;
+        }
         updateNumberStatus(valueNumber.value);
 
         emit('input', valueNumber.value, _value.value, ev);
@@ -454,7 +509,7 @@ export default defineComponent({
 
     const onKeyDown = (event: KeyboardEvent) => {
       emit('keydown', event);
-      if (!event.defaultPrevented) {
+      if (!event.defaultPrevented && props.keyboard) {
         keyDownHandler(event);
       }
     };

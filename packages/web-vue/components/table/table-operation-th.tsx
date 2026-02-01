@@ -35,13 +35,29 @@ export default defineComponent({
       let checked = false;
       let indeterminate = false;
 
-      const currentSelectedEnabledRowKeys =
-        tableCtx.currentSelectedRowKeys?.filter(
-          (key) => tableCtx.currentAllEnabledRowKeys?.includes(key) ?? true
-        ) ?? [];
-
-      const selectedNumber = currentSelectedEnabledRowKeys.length;
       const totalEnabledNumber = tableCtx.currentAllEnabledRowKeys?.length ?? 0;
+      if (totalEnabledNumber === 0) {
+        return {
+          checked,
+          indeterminate,
+        };
+      }
+
+      const enabledKeySet =
+        tableCtx.currentAllEnabledRowKeySet ??
+        new Set(tableCtx.currentAllEnabledRowKeys ?? []);
+
+      const currentSelectedRowKeys = tableCtx.currentSelectedRowKeys ?? [];
+      let selectedNumber = 0;
+      for (const key of currentSelectedRowKeys) {
+        if (enabledKeySet.has(key)) {
+          selectedNumber += 1;
+          if (selectedNumber >= totalEnabledNumber) {
+            break;
+          }
+        }
+      }
+
       if (selectedNumber > 0) {
         if (selectedNumber >= totalEnabledNumber) {
           checked = true;

@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { nextTick, reactive, ref } from 'vue';
+import { defineComponent, h, nextTick, reactive, ref } from 'vue';
 import Table from '../table';
 import { TableChangeExtra, TableColumnData, TableData } from '../interface';
 
@@ -114,5 +114,119 @@ describe('Table', () => {
     expect(testSortRes.currentDataSource.length).toBe(5);
     expect(testSortRes.currentDataSource[0].key).toBe('5');
     expect(testSortRes.currentDataSource[4].key).toBe('1');
+  });
+
+  test('column resize should keep header and body col widths aligned with editable cells', async () => {
+    const data = reactive(
+      JSONCopy([
+        { key: '1', name: 'Jane Doe1', age: 1 },
+        { key: '2', name: 'Jane Doe2', age: 2 },
+      ])
+    );
+
+    const columns: TableColumnData[] = [
+      {
+        title: 'Name',
+        dataIndex: 'name',
+        width: 100,
+        slotName: 'name',
+      },
+      {
+        title: 'Age',
+        dataIndex: 'age',
+        width: 100,
+        slotName: 'age',
+      },
+    ];
+
+    const EditableCell = defineComponent({
+      name: 'EditableCell',
+      props: {
+        modelValue: [String, Number],
+      },
+      emits: ['update:modelValue'],
+      setup(props, { emit }) {
+        return () =>
+          h('input', {
+            value: String(props.modelValue ?? ''),
+            onInput: (ev: Event) => {
+              emit('update:modelValue', (ev.target as HTMLInputElement).value);
+            },
+          });
+      },
+    });
+
+    const wrapper = mount(Table as any, {
+      props: {
+        columns,
+        data,
+        scroll: { y: 200 },
+        columnResizable: true,
+        pagination: false,
+      },
+      slots: {
+        name: ({ record }: { record: any }) =>
+          h(EditableCell, {
+            'modelValue': record.name,
+            'onUpdate:modelValue': (v: string) => {
+              record.name = v;
+            },
+          }),
+        age: ({ record }: { record: any }) =>
+          h(EditableCell, {
+            'modelValue': record.age,
+            'onUpdate:modelValue': (v: string) => {
+              record.age = Number(v);
+            },
+          }),
+      },
+    });
+
+    await nextTick();
+    expect(wrapper.find('.arco-table-header').exists()).toBe(true);
+    expect(wrapper.find('.arco-table-body').exists()).toBe(true);
+    expect(wrapper.findAll('input').length).toBeGreaterThan(0);
+
+    const headerThs = wrapper.findAll('.arco-table-header .arco-table-th');
+    expect(headerThs.length).toBe(2);
+
+    const firstHeaderTh = headerThs[0].element as HTMLElement;
+    Object.defineProperty(firstHeaderTh, 'getBoundingClientRect', {
+      configurable: true,
+      value: () => ({
+        x: 0,
+        y: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        width: 100,
+        height: 0,
+        toJSON: () => undefined,
+      }),
+    });
+
+    const firstHandle = wrapper.find(
+      '.arco-table-header .arco-table-column-handle'
+    );
+    expect(firstHandle.exists()).toBe(true);
+    await firstHandle.trigger('mousedown');
+    window.dispatchEvent(new MouseEvent('mousemove', { clientX: 160 }));
+    window.dispatchEvent(new MouseEvent('mouseup'));
+    await nextTick();
+
+    const headerCols = wrapper.findAll('.arco-table-header colgroup col');
+    const bodyCols = wrapper.findAll('.arco-table-body colgroup col');
+
+    expect(headerCols.length).toBe(2);
+    expect(bodyCols.length).toBe(2);
+
+    const headerColStyle = headerCols[0].attributes('style');
+    const bodyColStyle = bodyCols[0].attributes('style');
+
+    const getWidth = (style?: string) => style?.match(/width:\s*(\d+)px/)?.[1];
+
+    expect(getWidth(headerColStyle)).toBe('160');
+    expect(getWidth(bodyColStyle)).toBe('160');
   });
 });

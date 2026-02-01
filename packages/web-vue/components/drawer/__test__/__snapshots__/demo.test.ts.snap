@@ -19,6 +19,15 @@ exports[`<drawer> demo: render [custom] correctly 1`] = `
   </button></div>"
 `;
 
+exports[`<drawer> demo: render [fullscreen] correctly 1`] = `
+"<div style=\\"margin-bottom: 12px; display: flex; align-items: center; gap: 12px;\\"><button class=\\"arco-btn arco-btn-secondary arco-btn-shape-square arco-btn-size-medium arco-btn-status-normal\\" type=\\"button\\">
+    <!--v-if-->Open Drawer
+  </button><span>显示全屏按钮：</span><button type=\\"button\\" role=\\"switch\\" aria-checked=\\"false\\" class=\\"arco-switch arco-switch-type-circle\\"><span class=\\"arco-switch-handle\\"><span class=\\"arco-switch-handle-icon\\"></span></span><!--  prettier-ignore  -->
+    <!--v-if-->
+  </button></div>
+<div style=\\"margin-top: 12px;\\">当前全屏：false</div>"
+`;
+
 exports[`<drawer> demo: render [function] correctly 1`] = `
 "<button class=\\"arco-btn arco-btn-primary arco-btn-shape-square arco-btn-size-medium arco-btn-status-normal\\" type=\\"button\\">
   <!--v-if-->Open Drawer

@@ -87,7 +87,12 @@ export default defineComponent({
     const leafKeys = computed(() => getLeafKeys(props.record));
 
     const selectionStatus = computed(() =>
-      getSelectionStatus(tableCtx.currentSelectedRowKeys ?? [], leafKeys.value)
+      getSelectionStatus(
+        tableCtx.currentSelectedRowKeySet ??
+          tableCtx.currentSelectedRowKeys ??
+          [],
+        leafKeys.value
+      )
     );
 
     const renderContent = () => {
@@ -118,7 +123,11 @@ export default defineComponent({
 
         return (
           <Checkbox
-            modelValue={props.selectedRowKeys?.includes(value) ?? false}
+            modelValue={
+              tableCtx.selectedRowKeySet?.has(value) ??
+              props.selectedRowKeys?.includes(value) ??
+              false
+            }
             disabled={Boolean(props.record.disabled)}
             uninjectGroupContext
             onChange={(checked) =>
@@ -133,7 +142,11 @@ export default defineComponent({
         const value = props.record.key;
         return (
           <Radio
-            modelValue={props.selectedRowKeys?.includes(value) ?? false}
+            modelValue={
+              tableCtx.selectedRowKeySet?.has(value) ??
+              props.selectedRowKeys?.includes(value) ??
+              false
+            }
             disabled={Boolean(props.record.disabled)}
             uninjectGroupContext
             onChange={(checked) =>

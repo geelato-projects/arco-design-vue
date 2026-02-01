@@ -157,8 +157,9 @@ import {
   Input,
   Empty,
   Link,
-} from '@arco-design/web-vue';
-import { IconSkin, IconLink } from '@arco-design/web-vue/es/icon';
+} from '@geelato/web-vue';
+import IconSkin from '@geelato/web-vue/es/icon/icon-skin';
+import IconLink from '@geelato/web-vue/es/icon/icon-link';
 import axios from 'axios';
 import { ThemeData } from './interface';
 import {
@@ -255,7 +256,7 @@ export default defineComponent({
           theme.value = _theme;
 
           if (notice) {
-            Notification.success({
+            (Notification as any).success({
               id: 'theme',
               title: t('themeBox.installTheme'),
               content: t('themeBox.installThemeSuccess'),
@@ -264,7 +265,7 @@ export default defineComponent({
           }
         })
         .catch(() => {
-          Notification.error({
+          (Notification as any).error({
             id: 'theme',
             title: t('themeBox.installTheme'),
             content: t('themeBox.installThemeError'),

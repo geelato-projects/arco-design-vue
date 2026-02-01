@@ -111,7 +111,7 @@ import {
   Empty,
   Grid,
   GridItem,
-} from '@arco-design/web-vue';
+} from '@geelato/web-vue';
 
 const compareVersion = (v1: string, v2: string) => {
   const mainArray1 = v1.split('-');

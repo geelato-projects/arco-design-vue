@@ -96,6 +96,7 @@
                     {{ cancelDisplayText }}
                   </arco-button>
                   <arco-button
+                    v-if="!hideOk"
                     type="primary"
                     v-bind="okButtonProps"
                     :loading="mergedOkLoading"
@@ -244,6 +245,14 @@ export default defineComponent({
      * @en Whether to hide the cancel button
      */
     hideCancel: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * @zh 是否隐藏确定按钮
+     * @en Whether to hide the ok button
+     */
+    hideOk: {
       type: Boolean,
       default: false,
     },

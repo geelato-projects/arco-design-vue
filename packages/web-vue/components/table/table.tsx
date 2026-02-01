@@ -8,6 +8,7 @@ import {
   computed,
   defineComponent,
   inject,
+  nextTick,
   onMounted,
   provide,
   reactive,
@@ -732,7 +733,7 @@ export default defineComponent({
     const { componentRef: tbodyComRef, elementRef: tbodyRef } =
       useComponentRef('containerRef');
     const { componentRef: virtualComRef, elementRef: virtualRef } =
-      useComponentRef('viewportRef');
+      useComponentRef('containerRef');
     const { componentRef: theadComRef, elementRef: theadRef } =
       useComponentRef('containerRef');
     const containerElement = computed(() => {
@@ -969,6 +970,14 @@ export default defineComponent({
       emit,
     });
 
+    const currentAllEnabledRowKeySet = computed(
+      () => new Set(currentAllEnabledRowKeys.value)
+    );
+    const currentSelectedRowKeySet = computed(
+      () => new Set(currentSelectedRowKeys.value)
+    );
+    const selectedRowKeySet = computed(() => new Set(selectedRowKeys.value));
+
     const { expandedRowKeys, handleExpand, expand, expandAll } = useExpand({
       expandedKeys,
       defaultExpandedKeys,
@@ -1026,22 +1035,33 @@ export default defineComponent({
             expand: _record.expand,
             isLeaf: _record.isLeaf,
           };
-          if (_record.children) {
-            record.isLeaf = false;
-            record.children = travel(_record.children);
+          const recordChildren = _record.children;
+
+          if (Array.isArray(recordChildren)) {
+            if (recordChildren.length > 0) {
+              record.isLeaf = false;
+              record.children = travel(recordChildren);
+            } else if (showEmptyTree.value) {
+              record.isLeaf = false;
+              record.children = [];
+            } else {
+              record.isLeaf = true;
+            }
           } else if (props.loadMore && !_record.isLeaf) {
             record.isLeaf = false;
-            if (lazyLoadData[record.key]) {
-              record.children = travel(lazyLoadData[record.key]);
+            const lazyChildren = lazyLoadData[record.key];
+            if (lazyChildren) {
+              record.children = travel(lazyChildren);
             }
           } else {
             record.isLeaf = true;
           }
+
           record.hasSubtree = Boolean(
             record.children
               ? props.hideExpandButtonOnEmpty
                 ? record.children.length > 0
-                : true
+                : showEmptyTree.value || record.children.length > 0
               : props.loadMore && !record.isLeaf
           );
 
@@ -1450,7 +1470,10 @@ export default defineComponent({
         resizingColumn,
         checkStrictly,
         currentAllEnabledRowKeys,
+        currentAllEnabledRowKeySet,
         currentSelectedRowKeys,
+        currentSelectedRowKeySet,
+        selectedRowKeySet,
         addColumn,
         removeColumn,
         onSelectAll: handleSelectAll,
@@ -1482,6 +1505,7 @@ export default defineComponent({
           isScroll.value.x ||
           splitTable.value ||
           hasEllipsis.value,
+        [`${prefixCls}-virtualized`]: Boolean(props.virtualListProps),
       },
     ]);
 
@@ -1523,6 +1547,16 @@ export default defineComponent({
       }
       thWidth.value = width;
     };
+
+    watch(
+      columnWidth,
+      () => {
+        if (isVirtualList.value) {
+          nextTick(getThWidth);
+        }
+      },
+      { deep: true }
+    );
 
     const hasScrollBar = ref(false);
 
@@ -1601,11 +1635,17 @@ export default defineComponent({
       });
 
     const getVirtualColumnStyle = (name: string | undefined) => {
-      if (!isVirtualList.value || !name || !thWidth.value[name]) {
+      if (!isVirtualList.value || !name) {
         return undefined;
       }
 
-      return { width: `${thWidth.value[name]}px` };
+      const width = columnWidth[name] ?? thWidth.value[name];
+
+      if (!width) {
+        return undefined;
+      }
+
+      return { width: `${width}px` };
     };
 
     const renderSummaryRow = (record: TableDataWithRaw, rowIndex: number) => {
@@ -1782,7 +1822,7 @@ export default defineComponent({
       return null;
     };
 
-    const renderRecord = (
+    const renderRecordRow = (
       record: TableDataWithRaw,
       rowIndex: number,
       {
@@ -1794,7 +1834,6 @@ export default defineComponent({
       const currentKey = record.key;
       const currentPath = (indexPath ?? []).concat(rowIndex);
       const expandContent = renderExpandContent(record);
-      const showExpand = expandedRowKeys.value.includes(currentKey);
 
       const isDragTarget = dragState.sourceKey === record.key;
 
@@ -1831,128 +1870,280 @@ export default defineComponent({
         : {};
 
       return (
-        <>
-          <Tr
-            v-slots={{
-              tr: slots.tr,
-            }}
-            key={currentKey}
-            class={[
-              {
-                [`${prefixCls}-tr-draggable`]: dragType.value === 'row',
-                [`${prefixCls}-tr-drag`]: isDragTarget,
-              },
-              isFunction(props.rowClass)
-                ? props.rowClass(record.raw, rowIndex)
-                : props.rowClass,
-            ]}
-            rowIndex={rowIndex}
-            record={record}
-            checked={
-              props.rowSelection && selectedRowKeys.value?.includes(currentKey)
+        <Tr
+          v-slots={{
+            tr: slots.tr,
+          }}
+          key={currentKey}
+          class={[
+            {
+              [`${prefixCls}-tr-draggable`]: dragType.value === 'row',
+              [`${prefixCls}-tr-drag`]: isDragTarget,
+            },
+            isFunction(props.rowClass)
+              ? props.rowClass(record.raw, rowIndex)
+              : props.rowClass,
+          ]}
+          rowIndex={rowIndex}
+          record={record}
+          checked={
+            props.rowSelection && selectedRowKeySet.value.has(currentKey)
+          }
+          // @ts-ignore
+          onClick={(ev: Event) => handleRowClick(record, ev)}
+          onDblclick={(ev: Event) => handleRowDblclick(record, ev)}
+          onContextmenu={(ev: Event) => handleRowContextMenu(record, ev)}
+          {...(dragType.value === 'row' ? dragSourceEvent : {})}
+          {...dragTargetEvent}
+        >
+          {operations.value.map((operation, index) => {
+            const cellId = `${rowIndex}-${index}-${record.key}`;
+            const [rowspan, colspan] = props.spanAll
+              ? tableSpan.value[cellId] ?? [1, 1]
+              : [1, 1];
+
+            if (props.spanAll && removedCells.value.includes(cellId)) {
+              return null;
             }
-            // @ts-ignore
-            onClick={(ev: Event) => handleRowClick(record, ev)}
-            onDblclick={(ev: Event) => handleRowDblclick(record, ev)}
-            onContextmenu={(ev: Event) => handleRowContextMenu(record, ev)}
-            {...(dragType.value === 'row' ? dragSourceEvent : {})}
-            {...dragTargetEvent}
-          >
-            {operations.value.map((operation, index) => {
-              const cellId = `${rowIndex}-${index}-${record.key}`;
-              const [rowspan, colspan] = props.spanAll
-                ? tableSpan.value[cellId] ?? [1, 1]
-                : [1, 1];
 
-              if (props.spanAll && removedCells.value.includes(cellId)) {
-                return null;
-              }
+            const style = getVirtualColumnStyle(operation.name);
 
-              const style = getVirtualColumnStyle(operation.name);
+            return (
+              <OperationTd
+                v-slots={{
+                  'drag-handle-icon': slots['drag-handle-icon'],
+                }}
+                key={`operation-td-${index}`}
+                style={style}
+                operationColumn={operation}
+                operations={operations.value}
+                record={record}
+                hasExpand={Boolean(expandContent)}
+                selectedRowKeys={currentSelectedRowKeys.value}
+                rowSpan={rowspan}
+                colSpan={colspan}
+                renderExpandBtn={renderExpandBtn}
+                {...(dragType.value === 'handle' ? dragSourceEvent : {})}
+              />
+            );
+          })}
+          {dataColumns.value.map((column, index) => {
+            const cellId = `${rowIndex}-${
+              props.spanAll ? operations.value.length + index : index
+            }-${record.key}`;
+            const [rowspan, colspan] = tableSpan.value[cellId] ?? [1, 1];
 
-              return (
-                <OperationTd
-                  v-slots={{
-                    'drag-handle-icon': slots['drag-handle-icon'],
-                  }}
-                  key={`operation-td-${index}`}
-                  style={style}
-                  operationColumn={operation}
-                  operations={operations.value}
-                  record={record}
-                  hasExpand={Boolean(expandContent)}
-                  selectedRowKeys={currentSelectedRowKeys.value}
-                  rowSpan={rowspan}
-                  colSpan={colspan}
-                  renderExpandBtn={renderExpandBtn}
-                  {...(dragType.value === 'handle' ? dragSourceEvent : {})}
-                />
-              );
-            })}
-            {dataColumns.value.map((column, index) => {
-              const cellId = `${rowIndex}-${
-                props.spanAll ? operations.value.length + index : index
-              }-${record.key}`;
-              const [rowspan, colspan] = tableSpan.value[cellId] ?? [1, 1];
+            if (removedCells.value.includes(cellId)) {
+              return null;
+            }
 
-              if (removedCells.value.includes(cellId)) {
-                return null;
-              }
-
-              const extraProps =
-                index === 0
-                  ? {
-                      showExpandBtn: record.hasSubtree,
-                      indentSize: record.hasSubtree
-                        ? indentSize - 20
-                        : indentSize,
-                    }
-                  : {};
-
-              const style = getVirtualColumnStyle(column.dataIndex);
-
-              return (
-                <Td
-                  v-slots={{
-                    td: slots.td,
-                  }}
-                  key={`td-${index}`}
-                  style={style}
-                  rowIndex={rowIndex}
-                  record={record}
-                  column={column}
-                  operations={operations.value}
-                  dataColumns={dataColumns.value}
-                  rowSpan={rowspan}
-                  renderExpandBtn={renderExpandBtn}
-                  colSpan={colspan}
-                  {...extraProps}
-                  // @ts-ignore
-                  onClick={(ev: Event) => handleCellClick(record, column, ev)}
-                  onDblclick={(ev: Event) =>
-                    handleCellDblclick(record, column, ev)
+            const extraProps =
+              index === 0
+                ? {
+                    showExpandBtn: record.hasSubtree,
+                    indentSize: record.hasSubtree
+                      ? indentSize - 20
+                      : indentSize,
                   }
-                  onMouseenter={(ev: Event) =>
-                    handleCellMouseEnter(record, column, ev)
-                  }
-                  onMouseleave={(ev: Event) =>
-                    handleCellMouseLeave(record, column, ev)
-                  }
-                  onContextmenu={(ev: Event) =>
-                    handleCellContextmenu(record, column, ev)
-                  }
-                />
-              );
-            })}
-          </Tr>
+                : {};
+
+            const style = getVirtualColumnStyle(column.dataIndex);
+
+            return (
+              <Td
+                v-slots={{
+                  td: slots.td,
+                }}
+                key={`td-${index}`}
+                style={style}
+                rowIndex={rowIndex}
+                record={record}
+                column={column}
+                operations={operations.value}
+                dataColumns={dataColumns.value}
+                rowSpan={rowspan}
+                renderExpandBtn={renderExpandBtn}
+                colSpan={colspan}
+                {...extraProps}
+                // @ts-ignore
+                onClick={(ev: Event) => handleCellClick(record, column, ev)}
+                onDblclick={(ev: Event) =>
+                  handleCellDblclick(record, column, ev)
+                }
+                onMouseenter={(ev: Event) =>
+                  handleCellMouseEnter(record, column, ev)
+                }
+                onMouseleave={(ev: Event) =>
+                  handleCellMouseLeave(record, column, ev)
+                }
+                onContextmenu={(ev: Event) =>
+                  handleCellContextmenu(record, column, ev)
+                }
+              />
+            );
+          })}
+        </Tr>
+      );
+    };
+
+    const renderRecord = (
+      record: TableDataWithRaw,
+      rowIndex: number,
+      {
+        indentSize = 0,
+        indexPath,
+        allowDrag = true,
+      }: { indentSize?: number; indexPath?: number[]; allowDrag?: boolean } = {}
+    ): JSX.Element => {
+      const currentKey = record.key;
+      const currentPath = (indexPath ?? []).concat(rowIndex);
+      const expandContent = renderExpandContent(record);
+      const showExpand = expandedRowKeys.value.includes(currentKey);
+
+      return (
+        <>
+          {renderRecordRow(record, rowIndex, {
+            indentSize,
+            indexPath,
+            allowDrag,
+          })}
           {showExpand &&
             renderExpand(record, {
               indentSize: indentSize + props.indentSize,
               indexPath: currentPath,
-              allowDrag: allowDrag && !isDragTarget,
+              allowDrag,
               expandContent,
             })}
         </>
+      );
+    };
+
+    const renderVirtualEmptyRow = (key: BaseType) => {
+      return (
+        <Tr key={key} empty>
+          <Td colSpan={dataColumns.value.length + operations.value.length}>
+            {slots.empty?.() ??
+              configCtx?.slots.empty?.({ component: 'table' }) ?? <Empty />}
+          </Td>
+        </Tr>
+      );
+    };
+
+    type VirtualItem =
+      | {
+          type: 'record';
+          _key: string;
+          record: TableDataWithRaw;
+          rowIndex: number;
+          indentSize: number;
+          indexPath: number[];
+        }
+      | {
+          type: 'expand';
+          _key: string;
+          record: TableDataWithRaw;
+        }
+      | {
+          type: 'empty-subtree';
+          _key: string;
+        };
+
+    const virtualListData = computed<VirtualItem[]>(() => {
+      if (!isVirtualList.value || flattenData.value.length === 0) {
+        return [];
+      }
+
+      const hasSubData = flattenData.value.some((record) =>
+        Boolean(record.hasSubtree)
+      );
+      const baseIndentSize = hasSubData ? 20 : 0;
+      const expandedKeySet = new Set(expandedRowKeys.value);
+
+      const list: VirtualItem[] = [];
+      let recordIndex = 0;
+
+      const travel = (
+        data: TableDataWithRaw[],
+        indentSize: number,
+        indexPath: number[]
+      ) => {
+        data.forEach((record, index) => {
+          const currentPath = indexPath.concat(index);
+          list.push({
+            type: 'record',
+            _key: `r-${String(record.key)}`,
+            record,
+            rowIndex: recordIndex,
+            indentSize,
+            indexPath: currentPath,
+          });
+          recordIndex += 1;
+
+          if (!expandedKeySet.has(record.key)) return;
+
+          if (record.hasSubtree) {
+            if (record.children?.length === 0 && showEmptyTree.value) {
+              list.push({
+                type: 'empty-subtree',
+                _key: `empty-subtree-${String(record.key)}`,
+              });
+              return;
+            }
+            if (record.children && record.children.length > 0) {
+              travel(
+                record.children,
+                indentSize + props.indentSize,
+                currentPath
+              );
+            }
+            return;
+          }
+
+          const expandContent = renderExpandContent(record);
+          if (expandContent) {
+            list.push({
+              type: 'expand',
+              _key: `expand-${String(record.key)}`,
+              record,
+            });
+          }
+        });
+      };
+
+      travel(flattenData.value, baseIndentSize, []);
+      return list;
+    });
+
+    const renderVirtualItem = (item: VirtualItem) => {
+      if (item.type === 'record') {
+        return renderRecordRow(item.record, item.rowIndex, {
+          indentSize: item.indentSize,
+          indexPath: item.indexPath,
+        });
+      }
+
+      if (item.type === 'empty-subtree') {
+        return renderVirtualEmptyRow(item._key);
+      }
+
+      const expandContent = renderExpandContent(item.record);
+      if (!expandContent) {
+        return null;
+      }
+
+      const scrollContainer = containerElement.value;
+      return (
+        <Tr key={`${item.record.key}-expand`} expand>
+          <Td
+            isFixedExpand={
+              hasLeftFixedColumn.value || hasRightFixedColumn.value
+            }
+            containerWidth={scrollContainer?.clientWidth}
+            colSpan={dataColumns.value.length + operations.value.length}
+          >
+            {expandContent}
+          </Td>
+        </Tr>
       );
     };
 
@@ -2003,7 +2194,8 @@ export default defineComponent({
               const resizable =
                 props.columnResizable &&
                 Boolean(column.dataIndex) &&
-                index < row.length - 1;
+                index < row.length - 1 &&
+                !column.fixed;
 
               return (
                 <Th
@@ -2027,6 +2219,26 @@ export default defineComponent({
         ))}
       </Thead>
     );
+
+    const VirtualListTable = defineComponent({
+      setup(_props, { attrs, slots }) {
+        return () => (
+          <table
+            {...attrs}
+            style={[attrs.style, { tableLayout: 'fixed' }]}
+            cellpadding={0}
+            cellspacing={0}
+          >
+            <ColGroup
+              dataColumns={dataColumns.value}
+              operations={operations.value}
+              columnWidth={columnWidth}
+            />
+            {slots.default?.()}
+          </table>
+        );
+      },
+    });
 
     const renderContent = () => {
       if (splitTable.value) {
@@ -2088,22 +2300,15 @@ export default defineComponent({
               {isVirtualList.value && flattenData.value.length ? (
                 <VirtualList
                   v-slots={{
-                    item: ({
-                      item,
-                      index,
-                    }: {
-                      item: TableDataWithRaw;
-                      index: number;
-                    }) => renderRecord(item, index),
+                    item: ({ item }: { item: VirtualItem }) =>
+                      renderVirtualItem(item),
                   }}
-                  ref={(ins: any) => {
-                    if (ins?.$el) tbodyRef.value = ins.$el;
-                  }}
+                  ref={virtualComRef.value as any}
                   class={`${prefixCls}-body`}
-                  data={flattenData.value}
+                  data={virtualListData.value as any}
                   itemKey="_key"
                   component={{
-                    list: 'table',
+                    list: VirtualListTable,
                     content: 'tbody',
                   }}
                   listAttrs={{
@@ -2111,8 +2316,8 @@ export default defineComponent({
                     style: contentStyle.value,
                   }}
                   paddingPosition="list"
-                  height="auto"
-                  {...props.virtualListProps}
+                  height={props.scroll?.y ?? 'auto'}
+                  {...(props.virtualListProps as any)}
                   onScroll={onTbodyScroll}
                 />
               ) : (

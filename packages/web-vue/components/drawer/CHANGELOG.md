@@ -2,6 +2,14 @@
 changelog: true
 ```
 
+## 2.59.2
+
+`2026-01-31`
+
+### 🆕 Feature
+
+- Add `hideOk` prop to hide the ok button
+
 ## 2.58.0
 
 `2025-11-13`

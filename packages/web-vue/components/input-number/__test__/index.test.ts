@@ -72,4 +72,58 @@ describe('InputNumber', () => {
     await input.setValue('123');
     expect(input.element.value).toBe('');
   });
+
+  test('keyboard arrow keys work by default', async () => {
+    const wrapper = mount(InputNumber, {
+      props: {
+        modelValue: 1,
+        step: 1,
+      },
+    });
+    const input = wrapper.find('input');
+    await input.trigger('keydown', { key: 'ArrowUp' });
+    expect(wrapper.find('input').element.value).toBe('2');
+  });
+
+  test('keyboard prop disables arrow keys', async () => {
+    const wrapper = mount(InputNumber, {
+      props: {
+        keyboard: false,
+        modelValue: 1,
+      },
+    });
+    const input = wrapper.find('input');
+    await input.trigger('keydown', { key: 'ArrowUp' });
+    expect(wrapper.find('input').element.value).toBe('1');
+    await input.trigger('keydown', { key: 'ArrowDown' });
+    expect(wrapper.find('input').element.value).toBe('1');
+  });
+
+  test('supports comma-formatted input value', async () => {
+    const wrapper = mount(InputNumber, {
+      props: {
+        modelEvent: 'input',
+      },
+    });
+
+    const input = wrapper.find('input');
+    await input.setValue('1,200.00');
+
+    const inputEvents = wrapper.emitted('input');
+    expect(inputEvents?.[0][0]).toBe(1200);
+    expect(input.element.value).toBe('1,200.00');
+  });
+
+  test('show-group-separator formats display value', async () => {
+    const wrapper = mount(InputNumber, {
+      props: {
+        precision: 2,
+        showGroupSeparator: true,
+      },
+    });
+
+    const input = wrapper.find('input');
+    await input.setValue('1200.00');
+    expect(input.element.value).toBe('1,200.00');
+  });
 });

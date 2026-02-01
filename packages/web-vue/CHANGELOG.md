@@ -2,6 +2,52 @@
 changelog: true
 ```
 
+## 2.59.2
+
+`2026-01-31`
+
+### 🆕 Feature
+
+- **drawer:** Add `hideOk` prop to hide the ok button
+- **modal:** Add `hideOk` prop to hide the ok button
+
+## 2.58.3
+
+`2025-12-21`
+
+### 🐛 BugFix
+
+- **table:** Fix `AutoTooltip` style missing in table component, causing layout issues when tooltip is enabled.
+
+### 📝 Docs
+
+- **table:** Update virtual list demo to include tooltip for long text columns.
+
+## 2.58.2
+
+`2025-12-20`
+
+### 🐛 BugFix
+
+- **table:** Fix missing `ColGroup` in virtual list mode, resolving column width mismatch and missing horizontal scrollbar.
+- **icon:** Fix import path in docs components and ensure icon exports are complete.
+
+### 📝 Docs
+
+- **table:** Update virtual list demo to include long text columns for width verification.
+
+## 2.58.1
+
+`2025-12-18`
+
+### 💎 Enhancement
+
+- **table:** Optimize virtual list, support virtual scroll in tree data, fixed columns, etc.
+
+### 📝 Docs
+
+- **table:** Extend virtual list demo with column resize, selected keys and summaries
+
 ## 2.58.0
 
 `2025-11-13`
