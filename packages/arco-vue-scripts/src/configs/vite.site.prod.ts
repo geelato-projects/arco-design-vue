@@ -8,9 +8,7 @@ import paths from '../utils/paths';
 
 const root = process.cwd();
 
-const base =
-  process.env.AssetsPublicPath ||
-  'https://lf-arcosite.bytecdn.com/obj/arcosites/arcodesign/vue/';
+const base = process.env.AssetsPublicPath || '/';
 
 export default defineConfig({
   mode: 'production',

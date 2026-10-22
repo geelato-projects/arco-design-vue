@@ -1,9 +1,9 @@
-const CSS_EXTERNAL = ['https://unpkg.com/@geelato/web-vue@2.x/dist/arco.css'];
+const CSS_EXTERNAL = ['https://unpkg.com/@geelato/web-vue/dist/arco.css'];
 const JS_EXTERNAL = [
   'https://unpkg.com/vue@3.x/dist/vue.global.prod.js',
   'https://unpkg.com/dayjs@1.x/dayjs.min.js',
-  'https://unpkg.com/@geelato/web-vue@2.x/dist/arco-vue.min.js',
-  'https://unpkg.com/@geelato/web-vue@2.x/dist/arco-vue-icon.min.js',
+  'https://unpkg.com/@geelato/web-vue/dist/arco-vue.min.js',
+  'https://unpkg.com/@geelato/web-vue/dist/arco-vue-icon.min.js',
 ];
 
 const parseContent = (content: string) => {
@@ -18,10 +18,10 @@ const parseContent = (content: string) => {
           p2 = 'window.Vue';
           break;
         case '@geelato/web-vue':
-          p2 = 'window.ArcoVue';
+          p2 = 'window.GeelatoVue';
           break;
         case '@geelato/web-vue/es/icon':
-          p2 = 'window.ArcoVueIcon';
+          p2 = 'window.GeelatoVueIcon';
           break;
         default:
       }
@@ -32,7 +32,7 @@ const parseContent = (content: string) => {
   const html = `<div id="root" style="padding: 20px;">${htmlContent}</div>\n`;
   const js = `${
     jsContent || 'const Main = {};'
-  }\nconst app = Vue.createApp(Main);\napp.use(window.ArcoVue);\napp.use(window.ArcoVueIcon);\napp.mount('#root');`;
+  }\nconst app = Vue.createApp(Main);\napp.use(window.GeelatoVue);\napp.use(window.GeelatoVueIcon);\napp.mount('#root');`;
 
   css = css.replace(/:deep\((.+?)\)/g, (_, p1) => p1);
 
@@ -66,7 +66,7 @@ export const gotoCodepen = (content: string) => {
   const { html, js, css } = parseContent(content);
 
   const data = {
-    title: 'Arco Vue Code Pen',
+    title: 'Geelato Web Vue Code Pen',
     html,
     js,
     css,

@@ -14,5 +14,4 @@ declare module '*.md';
 interface Window {
   isLogin: boolean;
   user: any;
-  collectEvent: any;
 }

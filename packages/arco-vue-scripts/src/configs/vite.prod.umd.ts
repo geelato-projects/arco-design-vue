@@ -9,7 +9,7 @@ export default (type: 'component' | 'icon'): InlineConfig => {
       ? 'components/arco-vue.ts'
       : 'components/icon/arco-vue-icon.ts';
   const entryFileName = type === 'component' ? 'arco-vue' : 'arco-vue-icon';
-  const name = type === 'component' ? 'ArcoVue' : 'ArcoVueIcon';
+  const name = type === 'component' ? 'GeelatoVue' : 'GeelatoVueIcon';
 
   return {
     mode: 'production',

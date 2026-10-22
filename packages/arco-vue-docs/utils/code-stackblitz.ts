@@ -24,7 +24,7 @@ export const viteConfigContent = `
 
 export const packageJSONContent = JSON.stringify(
   {
-    name: 'arco-vue-demo',
+    name: 'geelato-web-vue-demo',
     version: '0.0.0',
     private: true,
     scripts: {
@@ -50,8 +50,8 @@ export const packageJSONContent = JSON.stringify(
 export const openStackblitz = (content: string) => {
   stackblitz.openProject(
     {
-      title: `arco-design-demo`,
-      description: 'arco-design-demo',
+      title: `geelato-web-vue-demo`,
+      description: 'geelato-web-vue-demo',
       template: 'node',
       files: {
         'src/App.vue': content,

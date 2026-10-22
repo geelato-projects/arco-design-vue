@@ -11,7 +11,7 @@ description: Follow the steps below to quickly get started using the component l
 
 vue >= 3.2.0
 
-**Note**: `Vue3` does not support IE browser environment, so ArcoVue does not support IE browser environment.
+**Note**: `Vue3` does not support IE browser environment, so Geelato Web Vue does not support IE browser environment.
 
 ## Install
 
@@ -26,12 +26,12 @@ yarn add --dev @geelato/web-vue
 
 ```ts
 import { createApp } from 'vue'
-import ArcoVue from '@geelato/web-vue';
+import GeelatoVue from '@geelato/web-vue';
 import App from './App.vue';
 import '@geelato/web-vue/dist/arco.css';
 
 const app = createApp(App);
-app.use(ArcoVue);
+app.use(GeelatoVue);
 app.mount('#app');
 ```
 
@@ -88,16 +88,16 @@ export default defineConfig({
 ```
 
 ## Global configuration
-When ArcoVue is introduced, a global configuration object can be passed in.
+When GeelatoVue is introduced, a global configuration object can be passed in.
 
 ```ts
 import { createApp } from 'vue'
-import ArcoVue from '@geelato/web-vue';
+import GeelatoVue from '@geelato/web-vue';
 import App from './App.vue';
 import '@geelato/web-vue/dist/arco.css';
 
 const app = createApp(App);
-app.use(ArcoVue, {
+app.use(GeelatoVue, {
   // Used to change the prefix name when using components
   componentPrefix: 'arco'
 });

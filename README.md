@@ -76,6 +76,11 @@ so they are kept as functional identifiers inherited from upstream — they are 
 What **is** ours: the npm package name `@geelato/web-vue`, the `GeelatoVue` UMD global used by material
 bundles, this repository, and everything in [NOTICE](./NOTICE).
 
+> **UMD users:** since the change set in this branch, `dist/arco-vue.min.js` registers
+> `window.GeelatoVue` and `dist/arco-vue-icon.min.js` registers `window.GeelatoVueIcon`. Published
+> npm releases up to 2.59.2 register `window.ArcoVue` / `window.ArcoVueIcon`, and keep doing so until
+> a release is cut from this branch.
+
 # Features
 
 ## Comprehensive

@@ -10,15 +10,15 @@ Arco图标是一个独立的库，需要额外引入并注册使用。
 
 ```ts
 import { createApp } from 'vue'
-import ArcoVue from '@geelato/web-vue';
+import GeelatoVue from '@geelato/web-vue';
 // 额外引入图标库
-import ArcoVueIcon from '@geelato/web-vue/es/icon';
+import GeelatoVueIcon from '@geelato/web-vue/es/icon';
 import App from './App.vue';
 import '@geelato/web-vue/dist/arco.css';
 
 const app = createApp(App);
-app.use(ArcoVue);
-app.use(ArcoVueIcon);
+app.use(GeelatoVue);
+app.use(GeelatoVueIcon);
 app.mount('#app');
 ```
 
@@ -44,15 +44,15 @@ The Arco icon is an independent library and needs to be introduced and registere
 
 ```ts
 import { createApp } from 'vue'
-import ArcoVue from '@geelato/web-vue';
+import GeelatoVue from '@geelato/web-vue';
 // import additional icon library
-import ArcoVueIcon from '@geelato/web-vue/es/icon';
+import GeelatoVueIcon from '@geelato/web-vue/es/icon';
 import App from './App.vue';
 import '@geelato/web-vue/dist/arco.css';
 
 const app = createApp(App);
-app.use(ArcoVue);
-app.use(ArcoVueIcon);
+app.use(GeelatoVue);
+app.use(GeelatoVueIcon);
 app.mount('#app');
 ```
 

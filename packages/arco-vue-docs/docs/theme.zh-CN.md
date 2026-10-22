@@ -2,7 +2,7 @@
 meta:
   type: 开发指南
 title: 定制主题
-description: ArcoVue提供了一套蓝色主题（ArcoBlue），用户可以根据自己的需求定制新主题，以满足业务和品牌上的多样化需求。
+description: Geelato Web Vue提供了一套蓝色主题（ArcoBlue），用户可以根据自己的需求定制新主题，以满足业务和品牌上的多样化需求。
 ```
 
 ArcoDesign定义了一套默认粒子变量，可以通过对粒子变量的修改覆盖来定制主题。

@@ -13,31 +13,15 @@ export async function checkLogin() {
         'https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/fbbdefc1702398f2f394c57270f7f727.png~tplv-uwbnlip3yd-png.png',
       username: 'xiaoming',
     };
-  } else {
-    if (!window.isLogin) {
-      try {
-        const { data } = await axios.get('/common/api/auth/userInfo', {
-          withCredentials: true,
-        });
-        window.isLogin = true;
-        window.user = data.result;
-      } catch {
-        window.isLogin = false;
-      }
-    }
+  } else if (!window.isLogin) {
     try {
-      const appId = /arco\.design/.test(window.location.href) ? 4374 : 263440;
-
-      window.collectEvent('init', {
-        app_id: appId,
-        channel: 'cn',
+      const { data } = await axios.get('/common/api/auth/userInfo', {
+        withCredentials: true,
       });
-      window.collectEvent('config', {
-        evtParams: {
-          site: 'ArcoDesignVue',
-        },
-      });
-      window.collectEvent('start');
-    } catch {}
+      window.isLogin = true;
+      window.user = data.result;
+    } catch {
+      window.isLogin = false;
+    }
   }
 }

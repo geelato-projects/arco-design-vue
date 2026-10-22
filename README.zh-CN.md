@@ -73,6 +73,10 @@ app.mount('#app');
 属于我们的部分是：npm 包名 `@geelato/web-vue`、物料 UMD 构建使用的 `GeelatoVue` 全局名、本仓库，
 以及 [NOTICE](./NOTICE) 中列明的内容。
 
+> **UMD 用户注意**：自本分支这批改动作起，`dist/arco-vue.min.js` 注册的是 `window.GeelatoVue`，
+> `dist/arco-vue-icon.min.js` 注册的是 `window.GeelatoVueIcon`。已发布的 npm 2.59.2 及更早版本仍注册
+> `window.ArcoVue` / `window.ArcoVueIcon`，在从本分支切出新版本之前会一直保持旧全局名。
+
 # 特性
 
 ## 全面

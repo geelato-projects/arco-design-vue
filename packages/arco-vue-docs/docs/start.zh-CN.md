@@ -9,7 +9,7 @@ description: 跟随以下的步骤，快速上手组件库的使用。
 
 vue >= 3.2.0
 
-**注意**：由于 `Vue3` 不再支持 IE 浏览器环境，ArcoVue 也不再支持 IE 浏览器环境。
+**注意**：由于 `Vue3` 不再支持 IE 浏览器环境，Geelato Web Vue 也不再支持 IE 浏览器环境。
 
 ## 安装
 
@@ -24,12 +24,12 @@ yarn add --dev @geelato/web-vue
 
 ```ts
 import { createApp } from 'vue'
-import ArcoVue from '@geelato/web-vue';
+import GeelatoVue from '@geelato/web-vue';
 import App from './App.vue';
 import '@geelato/web-vue/dist/arco.css';
 
 const app = createApp(App);
-app.use(ArcoVue);
+app.use(GeelatoVue);
 app.mount('#app');
 ```
 
@@ -86,16 +86,16 @@ export default defineConfig({
 ```
 
 ## 全局配置
-在引入 ArcoVue 时，可以传入一个全局配置对象。
+在引入 GeelatoVue 时，可以传入一个全局配置对象。
 
 ```ts
 import { createApp } from 'vue'
-import ArcoVue from '@geelato/web-vue';
+import GeelatoVue from '@geelato/web-vue';
 import App from './App.vue';
 import '@geelato/web-vue/dist/arco.css';
 
 const app = createApp(App);
-app.use(ArcoVue, {
+app.use(GeelatoVue, {
   // 用于改变使用组件时的前缀名称
   componentPrefix: 'arco'
 });
