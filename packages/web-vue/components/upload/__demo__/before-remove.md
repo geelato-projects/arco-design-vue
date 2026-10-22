@@ -39,7 +39,7 @@ The function will be executed before each file remove. Removing will be aborted 
 </template>
 
 <script>
-import { Modal } from '@arco-design/web-vue';
+import { Modal } from '@geelato/web-vue';
 
 export default {
   setup() {

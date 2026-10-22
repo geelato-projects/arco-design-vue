@@ -20,7 +20,7 @@ Every significant change is documented in the changelog file.
 
 ## Reporting Issues
 
-We use [Github issues](https://github.com/arco-design/arco-design-vue/issues) for bug reports and feature requests. Before reporting an issue, please make sure you have searched for similar [issues](https://github.com/arco-design/arco-design-vue/issues) as they may have been already answered or being fixed. A new issue should be submitted via [issue helper](https://arco.design/issue-helper?repo=arco-design-vue). For bug reporting, please include the minimum code that can be used to reproduce the problem. For feature request, please specify what changes you want and what behavior you expect.
+We use [Github issues](https://github.com/geelato-projects/arco-design-vue/issues) for bug reports and feature requests. Before reporting an issue, please make sure you have searched for similar [issues](https://github.com/geelato-projects/arco-design-vue/issues) as they may have been already answered or being fixed. File it directly at https://github.com/geelato-projects/arco-design-vue/issues/new. For bug reporting, please include the minimum code that can be used to reproduce the problem. For feature request, please specify what changes you want and what behavior you expect.
 
 ## Sending a pull request
 This project uses [pnpm](https://pnpm.io/) for package management. Please install Yarn before development.
@@ -36,12 +36,12 @@ This project uses [pnpm](https://pnpm.io/) for package management. Please instal
 
 ### Development
 
-1. Fork [this repository](https://github.com/arco-design/arco-design-vue) and create a branch from `main`.
+1. Fork [this repository](https://github.com/geelato-projects/arco-design-vue) and create a branch from `main`.
    - For new features, submit a pull request to the `feature` branch.
    - For other changes, submit to the `main` branch.
 
 ```bash
-git clone git@github.com:arco-design/arco-design-vue.git
+git clone git@github.com:geelato-projects/arco-design-vue.git
 ```
 
 2. Install the dependencies of each package in `workspaces`.

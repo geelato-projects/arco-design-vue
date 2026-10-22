@@ -39,7 +39,7 @@ description: 全局展示通知提醒，将信息及时有效的传达给用户�
 
 ```ts
 import { createApp } from 'vue'
-import { Notification } from '@arco-design/web-vue';
+import { Notification } from '@geelato/web-vue';
 
 const app = createApp(App);
 Notification._context = app._context;

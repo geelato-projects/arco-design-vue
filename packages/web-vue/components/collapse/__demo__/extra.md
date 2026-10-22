@@ -44,7 +44,7 @@ The extra node on the far right can be set by `extra`. `extra` click to set `sto
 </template>
 
 <script>
-import { Message } from '@arco-design/web-vue';
+import { Message } from '@geelato/web-vue';
 
 export default {
   setup() {

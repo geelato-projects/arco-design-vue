@@ -17,18 +17,18 @@ vue >= 3.2.0
 
 ```shell
 # npm
-npm install --save-dev @arco-design/web-vue
+npm install --save-dev @geelato/web-vue
 # yarn
-yarn add --dev @arco-design/web-vue
+yarn add --dev @geelato/web-vue
 ```
 
 ## Full import
 
 ```ts
 import { createApp } from 'vue'
-import ArcoVue from '@arco-design/web-vue';
+import ArcoVue from '@geelato/web-vue';
 import App from './App.vue';
-import '@arco-design/web-vue/dist/arco.css';
+import '@geelato/web-vue/dist/arco.css';
 
 const app = createApp(App);
 app.use(ArcoVue);
@@ -66,7 +66,7 @@ export default defineConfig({
 });
 ```
 
-Note: This method does not process the components manually imported by the user in the script, such as the Message component. The user still needs to manually import the style file corresponding to the component, such as `@arco-design/web-vue/es/message/style/css.js` .
+Note: This method does not process the components manually imported by the user in the script, such as the Message component. The user still needs to manually import the style file corresponding to the component, such as `@geelato/web-vue/es/message/style/css.js` .
 
 ## On-demand loading and component library themes (Arco plugin)
 
@@ -92,9 +92,9 @@ When ArcoVue is introduced, a global configuration object can be passed in.
 
 ```ts
 import { createApp } from 'vue'
-import ArcoVue from '@arco-design/web-vue';
+import ArcoVue from '@geelato/web-vue';
 import App from './App.vue';
-import '@arco-design/web-vue/dist/arco.css';
+import '@geelato/web-vue/dist/arco.css';
 
 const app = createApp(App);
 app.use(ArcoVue, {
@@ -105,7 +105,7 @@ app.mount('#app');
 ```
 
 ## import component
-In order to be compatible with the nuxt3 environment in the `2.44.3` version of the component library, the `exports` configuration is added. This configuration will have a certain impact on the import of component libraries. It is recommended to import component libraries and icons from `@arco-design/web-vue` and `@arco-design/web-vue/es/icon`.
+In order to be compatible with the nuxt3 environment in the `2.44.3` version of the component library, the `exports` configuration is added. This configuration will have a certain impact on the import of component libraries. It is recommended to import component libraries and icons from `@geelato/web-vue` and `@geelato/web-vue/es/icon`.
 
 
 ## Supported platforms

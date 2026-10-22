@@ -38,7 +38,7 @@ Use with forms to implement verification.
 
 <script setup>
 import { ref } from 'vue';
-import { Message} from '@arco-design/web-vue';
+import { Message} from '@geelato/web-vue';
 
 const value = ref('654321');
 const formRef = ref(null);

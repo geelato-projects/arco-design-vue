@@ -84,7 +84,7 @@ import {
   IconBulb,
   IconClose,
   IconMessage,
-} from '@arco-design/web-vue/es/icon';
+} from '@geelato/web-vue/es/icon';
 
 export default {
   components: {

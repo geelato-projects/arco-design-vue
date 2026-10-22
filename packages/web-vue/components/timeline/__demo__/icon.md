@@ -36,7 +36,7 @@ Custom node content
 </template>
 
 <script>
-import { IconExclamationCircleFill } from '@arco-design/web-vue/es/icon';
+import { IconExclamationCircleFill } from '@geelato/web-vue/es/icon';
 
 export default {
   components: { IconExclamationCircleFill },

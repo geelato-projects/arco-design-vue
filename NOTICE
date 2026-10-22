@@ -1,0 +1,54 @@
+Geelato Web Vue
+Copyright (c) 2025-present The Geelato Web Vue Authors
+
+This product includes software developed at Bytedance, Inc. and its
+affiliates, originally published as "Arco Design Vue":
+
+  Upstream repository: https://github.com/arco-design/arco-design-vue
+  Upstream project:    https://arco.design/
+  Upstream copyright:  Copyright (c) 2021 Bytedance, Inc. and its affiliates.
+  Upstream license:    MIT License (see LICENSE)
+
+The upstream work is used under the terms of its MIT License. The original
+copyright notice and permission notice are reproduced verbatim in LICENSE and
+are not altered by this project. Our modifications are offered under the same
+MIT License.
+
+Changes
+  We forked the upstream 2.34.x line and have modified it substantially for
+  the Geelato product line, including republishing the component package as
+  `@geelato/web-vue`. Our changes are recorded in
+  packages/web-vue/CHANGELOG.md and in this repository's commit history.
+  Neither the upstream authors nor Bytedance, Inc. are responsible for, have
+  reviewed, or endorse this modified distribution.
+
+Trademark notice
+  "Arco", "Arco Design" and "ByteDance" are trademarks of their respective
+  owners. The MIT License grants copyright and permission notices only; it
+  grants no trademark rights. This project is not affiliated with, sponsored,
+  endorsed, or officially maintained by Bytedance, Inc. or the Arco Design
+  project. The names are used solely to identify the origin of the upstream
+  source code, as required by the license.
+  For the same reason some technical identifiers are still inherited from
+  upstream and are functional, not brand statements: the `arco-` CSS class
+  prefix, the `--arco-*` CSS custom properties, the `arco-theme` attribute and
+  the compiled style-sheet file names. Renaming them would break every
+  existing theme and user stylesheet without changing the license position.
+
+--- 中文说明 ---
+
+Geelato Web Vue 派生（fork）自字节跳动的开源项目 Arco Design Vue
+（https://github.com/arco-design/arco-design-vue ，版权为 Bytedance, Inc.
+及其关联公司所有，采用 MIT 许可证）。本项目在 MIT 许可证允许的范围内对其做了
+深度修改，并将组件包重新发布为 `@geelato/web-vue`。
+
+LICENSE 文件中上游的版权声明与许可声明原文保留、未作修改；本项目的修改部分
+在同一 MIT 许可证下提供，并在 LICENSE 中并列了本项目的版权行。
+
+本项目与字节跳动、Arco Design 项目之间不存在任何关联、赞助、背书或官方维护
+关系。"Arco"、"Arco Design"、"ByteDance" 为各自权利人的商标，MIT 许可证只授予
+著作权许可、不授予商标许可；上述名称在本仓库中仅用于说明代码来源。
+
+保留的技术标识（`arco-` 类名前缀、`--arco-*` CSS 变量、`arco-theme` 属性、样式
+文件名）属于上游遗留的功能性标识，修改会导致既有主题与用户样式全部失效，与
+品牌归属无关。

@@ -1,6 +1,6 @@
 {
-  "name": "arco-design-vue-monorepo",
-  "description": "Arco Design Vue 2.0 Monorepo",
+  "name": "geelato-web-vue-monorepo",
+  "description": "Geelato Web Vue Monorepo (forked from Arco Design Vue 2.0)",
   "private": true,
   "scripts": {
     "postinstall": "husky install",
@@ -18,7 +18,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "author": "ArcoDesign Team",
+  "author": "The Geelato Web Vue Authors",
   "license": "MIT",
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",

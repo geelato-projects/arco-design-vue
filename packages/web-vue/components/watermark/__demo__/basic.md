@@ -18,7 +18,7 @@ Basic usage of the watermark.
 
 ```vue
 <template>
-  <a-watermark content="arco.design">
+  <a-watermark content="Geelato">
     <div style="width: 100%; height: 350px;" />
   </a-watermark>
 </template>

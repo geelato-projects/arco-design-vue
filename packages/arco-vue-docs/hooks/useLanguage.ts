@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-// import Locale from '@arco-design/web-vue/es/locale';
+// import Locale from '@geelato/web-vue/es/locale';
 import { getLocalStorage, setLocalStorage } from '../utils/local-storage';
 
 export const useLanguage = () => {

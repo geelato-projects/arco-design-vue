@@ -33,7 +33,7 @@ Basic usage of notification.
 </template>
 
 <script>
-import { Notification } from '@arco-design/web-vue';
+import { Notification } from '@geelato/web-vue';
 
 export default {
   setup() {

@@ -59,7 +59,7 @@ The component provides a named slot `extra` for users to customize additional co
 </template>
 <script>
   import { ref } from 'vue';
-  import { IconEye, IconDownload, IconInfoCircle } from '@arco-design/web-vue/es/icon';
+  import { IconEye, IconDownload, IconInfoCircle } from '@geelato/web-vue/es/icon';
 
   export default {
     components: {

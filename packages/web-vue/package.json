@@ -1,13 +1,22 @@
 {
   "name": "@geelato/web-vue",
   "version": "2.59.2",
-  "description": "Arco Design Vue 2.0: A Vue.js 3 UI Library",
+  "description": "Geelato Web Vue: a Vue 3 UI component library, forked from Arco Design Vue (MIT, © ByteDance) and modified for the Geelato product line.",
   "keywords": [
-    "arco",
-    "vue"
+    "geelato",
+    "vue",
+    "vue3",
+    "ui",
+    "components"
   ],
-  "author": "ArcoDesign Team",
-  "homepage": "https://arco.design/vue",
+  "author": "The Geelato Web Vue Authors",
+  "contributors": [
+    {
+      "name": "ArcoDesign Team",
+      "url": "https://github.com/arco-design/arco-design-vue"
+    }
+  ],
+  "homepage": "https://github.com/geelato-projects/arco-design-vue/tree/main/packages/web-vue#readme",
   "license": "MIT",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -17,11 +26,13 @@
     "es",
     "lib",
     "dist",
-    "json"
+    "json",
+    "LICENSE",
+    "NOTICE"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arco-design/arco-design-vue.git"
+    "url": "git+https://github.com/geelato-projects/arco-design-vue.git"
   },
   "sideEffects": [
     "dist/*",

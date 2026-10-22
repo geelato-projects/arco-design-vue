@@ -67,7 +67,7 @@ Click to upload user's avatar, and validate size and format of picture with befo
 </template>
 
 <script>
-import { IconEdit, IconPlus } from '@arco-design/web-vue/es/icon';
+import { IconEdit, IconPlus } from '@geelato/web-vue/es/icon';
 import { ref } from 'vue';
 
 export default {

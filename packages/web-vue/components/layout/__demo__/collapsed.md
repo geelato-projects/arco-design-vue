@@ -90,13 +90,13 @@ After setting the `trigger` property of `Menu.Sider` to `null`, the built-in tri
 </template>
 <script>
 import { defineComponent, ref } from 'vue';
-import { Message} from '@arco-design/web-vue';
+import { Message} from '@geelato/web-vue';
 import {
   IconCaretRight,
   IconCaretLeft,
   IconHome,
   IconCalendar,
-} from '@arco-design/web-vue/es/icon';
+} from '@geelato/web-vue/es/icon';
 
 export default defineComponent({
   components: {

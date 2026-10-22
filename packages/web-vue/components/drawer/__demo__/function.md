@@ -22,7 +22,7 @@ Use the drawer by function.
 </template>
 
 <script>
-import { Drawer } from '@arco-design/web-vue';
+import { Drawer } from '@geelato/web-vue';
 
 export default {
   setup() {

@@ -1,6 +1,7 @@
 {
   "name": "@arco-design/vite-plugin-arco-vue-docs",
   "version": "0.1.0",
+  "private": true,
   "description": "Provides Markdown to Vue Component in Arco Vue Docs",
   "author": "wangchen <wangchen.flsion@bytedance.com>",
   "license": "MIT",

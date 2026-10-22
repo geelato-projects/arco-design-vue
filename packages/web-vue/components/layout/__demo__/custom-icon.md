@@ -88,13 +88,13 @@ By setting the `trigger` property of `Menu.Sider`, the icon of the collapse butt
 </template>
 <script>
 import { defineComponent } from 'vue';
-import { Message} from '@arco-design/web-vue';
+import { Message} from '@geelato/web-vue';
 import {
   IconCaretRight,
   IconCaretLeft,
   IconHome,
   IconCalendar,
-} from '@arco-design/web-vue/es/icon';
+} from '@geelato/web-vue/es/icon';
 
 export default defineComponent({
   components: {

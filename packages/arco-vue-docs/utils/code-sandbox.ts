@@ -38,7 +38,7 @@ export const openCodeSandbox = (content: string) => {
           dependencies: {
             'vue': '^3.2.0',
             'dayjs': '^1.0',
-            '@arco-design/web-vue': 'latest',
+            '@geelato/web-vue': 'latest',
           },
           devDependencies: {
             '@vue/cli-plugin-babel': '^5.0',

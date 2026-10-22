@@ -35,7 +35,7 @@ export const packageJSONContent = JSON.stringify(
     dependencies: {
       'vue': '^3.2.0',
       'dayjs': '^1.0',
-      '@arco-design/web-vue': 'latest',
+      '@geelato/web-vue': 'latest',
     },
     devDependencies: {
       'vite': '^2.9.8',

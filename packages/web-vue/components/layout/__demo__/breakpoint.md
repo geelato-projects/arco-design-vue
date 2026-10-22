@@ -122,11 +122,11 @@ The Slider on the left can be set to expand/collapse in conjunction with Menu, a
 </template>
 <script>
 import { defineComponent, ref } from 'vue';
-import { Message } from '@arco-design/web-vue';
+import { Message } from '@geelato/web-vue';
 import {
   IconHome,
   IconCalendar,
-} from '@arco-design/web-vue/es/icon';
+} from '@geelato/web-vue/es/icon';
 
 export default defineComponent({
   components: {

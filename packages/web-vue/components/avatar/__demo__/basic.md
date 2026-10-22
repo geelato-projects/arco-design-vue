@@ -35,7 +35,7 @@ The basic use of avatars. If the avatar is text, the font size will be automatic
 </template>
 
 <script>
-import { IconUser } from '@arco-design/web-vue/es/icon';
+import { IconUser } from '@geelato/web-vue/es/icon';
 
 export default {
   components: { IconUser },
