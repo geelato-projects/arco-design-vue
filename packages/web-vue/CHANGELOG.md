@@ -2,6 +2,27 @@
 changelog: true
 ```
 
+## 3.0.0
+
+`2026-10-22`
+
+### ⚠ BREAKING CHANGES
+
+- **umd:** `dist/arco-vue.min.js` now registers `window.GeelatoVue` and `dist/arco-vue-icon.min.js` registers `window.GeelatoVueIcon`, instead of `window.ArcoVue` / `window.ArcoVueIcon`. Bundle file names and the `unpkg` entry are unchanged, so any page that reads the old global from a `<script>` tag has to rename it. The previous global name was the opposite of the external mapping the Geelato material build already used (`GeelatoVue`), which made the UMD entry unusable.
+
+### 🆕 Feature
+
+- **drawer:** Consult a host-registered dialog behavior preference on every ESC / mask event through the new `setDialogBehaviorReader` / `resolveDialogBehavior`. The value is pulled, not snapshotted at registration, so changing the preference while a drawer is open takes effect immediately. Business props only tighten: an explicit `false` always wins, an explicit `true` never loosens the preference, and passing `null` restores the library default.
+- **modal:** Same global dialog behavior preference as Drawer.
+- **drawer/modal:** Add `useDialogCloseGuard` and `DIALOG_CLOSE_GUARD_KEY` so content components can veto a close, including asynchronously.
+- **drawer/modal:** `on-before-cancel` accepts `() => boolean | void | Promise<boolean | void>` and gates the close button, ESC, mask and cancel button through one path, with re-entrancy protection while an async confirmation is pending.
+- **drawer/modal:** Render a floating close button when the combined preference leaves no other convenient exit.
+- **drawer/modal:** The ESC listener is attached for as long as the dialog is visible and the closable check runs at keydown time, so re-enabling the preference while a dialog is open takes effect immediately.
+
+### 💎 Enhancement
+
+- First release whose npm artifact carries this fork's own `LICENSE` and `NOTICE` alongside the corrected `author` / `repository` metadata. Published 2.59.2 and earlier still ship the upstream metadata and contain no `NOTICE`.
+
 ## 2.59.2
 
 `2026-01-31`

@@ -2,6 +2,18 @@
 changelog: true
 ```
 
+## 3.0.0
+
+`2026-10-22`
+
+### 🆕 Feature
+
+- Read the host-registered global dialog behavior preference (`setDialogBehaviorReader`) on every ESC / mask event; the value is pulled rather than snapshotted, and business props can only tighten it
+- Add `useDialogCloseGuard` so content components can veto a close, including asynchronously
+- `on-before-cancel` accepts `() => boolean | void | Promise<boolean | void>` and gates the close button, X button, mask and cancel button through one path, with re-entrancy protection while an async confirmation is pending
+- Render a floating close button when the combined preference leaves no other convenient exit
+- The ESC listener is now attached for as long as the modal is visible and the closable check runs at keydown time, so re-enabling the preference while the modal is open takes effect immediately (previously the listener was only attached when `esc-to-close` was true)
+
 ## 2.59.2
 
 `2026-01-31`

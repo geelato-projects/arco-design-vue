@@ -2,6 +2,27 @@
 changelog: true
 ```
 
+## 3.0.0
+
+`2026-10-22`
+
+### ⚠ 破坏性变更
+
+- **umd：** `dist/arco-vue.min.js` 现在注册 `window.GeelatoVue`，`dist/arco-vue-icon.min.js` 注册 `window.GeelatoVueIcon`，不再注册 `window.ArcoVue` / `window.ArcoVueIcon`。产物文件名与 `unpkg` 入口保持不变，用 `<script>` 标签读取旧全局名的页面需要改名。旧全局名与 Geelato 物料构建侧早已按 `GeelatoVue` 配置的 external 映射正好相反，令 UMD 入口不可用，本次一并纠正。
+
+### 🆕 新增功能
+
+- **drawer：** 新增 `setDialogBehaviorReader` / `resolveDialogBehavior`，ESC 与遮罩事件每次都读取宿主注册的全局弹窗行为偏好（拉取式，不在注册时快照，弹窗打开期间改偏好即时生效）。业务 props 只能收紧：显式 `false` 始终生效，显式 `true` 不会放宽全局偏好，传 `null` 恢复库默认。
+- **modal：** 与 Drawer 共用同一套全局弹窗行为偏好。
+- **drawer/modal：** 新增 `useDialogCloseGuard` 与 `DIALOG_CLOSE_GUARD_KEY`，内容组件可注册关闭守卫，支持异步否决。
+- **drawer/modal：** `on-before-cancel` 支持 `() => boolean | void | Promise<boolean | void>`，关闭按钮、ESC、遮罩与取消按钮统一走同一条决口，异步确认未落定期间防重入。
+- **drawer/modal：** 当偏好组合后不再保留任何便捷出口时，渲染浮动关闭按钮。
+- **drawer/modal：** ESC 监听在弹窗可见期间常驻、按键时再判定是否允许关闭，因此在弹窗打开期间把偏好切回允许关闭即刻生效。
+
+### 💎 功能优化
+
+- 首个把本 fork 自有 `LICENSE`、`NOTICE` 与订正后的 `author` / `repository` 元数据带进 npm 产物的版本；已发布的 2.59.2 及更早版本仍带上游元数据且不含 `NOTICE`。
+
 ## 2.58.1
 
 `2025-12-18`

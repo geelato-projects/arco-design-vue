@@ -1,6 +1,6 @@
 {
   "name": "@geelato/web-vue",
-  "version": "2.59.2",
+  "version": "3.0.0",
   "description": "Geelato Web Vue: a Vue 3 UI component library, forked from Arco Design Vue (MIT, © ByteDance) and modified for the Geelato product line.",
   "keywords": [
     "geelato",
