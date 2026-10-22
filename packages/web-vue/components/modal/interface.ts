@@ -125,7 +125,7 @@ export interface ModalConfig {
    * @en The callback function before the cancel event is triggered. If it returns false, no subsequent events will be triggered.
    * @version 2.7.0
    */
-  onBeforeCancel?: () => boolean;
+  onBeforeCancel?: () => boolean | void | Promise<boolean | void>;
   /**
    * @zh 对话框打开后（动画结束）触发
    * @en Triggered after the modal is opened (the animation ends)

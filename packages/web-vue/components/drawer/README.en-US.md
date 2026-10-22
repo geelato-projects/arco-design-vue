@@ -20,6 +20,27 @@ description: A drawer-like panel that slides out from the side of the screen aft
 
 @import ./__demo__/function.md
 
+## Global dialog behavior and close guards
+
+The host can register a dialog behavior reader once. Drawer/Modal read it on every ESC and mask event instead of snapshotting it at registration:
+
+```ts
+import { setDialogBehaviorReader } from '@geelato/web-vue';
+
+setDialogBehaviorReader(() => ({ escToClose, maskClosable }));
+```
+
+Business props are ANDed with the global preference: an explicit `false` always wins, while an explicit `true` cannot loosen the global preference. Pass `null` to restore the library default.
+
+Content components can register close guards. ESC, mask and the close button all pass through the guards; when `onBeforeCancel` is provided, the guards stand down:
+
+```ts
+import { useDialogCloseGuard } from '@geelato/web-vue';
+
+const guard = useDialogCloseGuard();
+guard?.register(() => !dirty);
+```
+
 ## API
 
 
@@ -47,7 +68,7 @@ description: A drawer-like panel that slides out from the side of the screen aft
 |body-class|The classname of the drawer body|`string \| any[]`|`-`|2.57.0|
 |body-style|Drawer body style|`StyleValue`|`-`|2.57.0|
 |on-before-ok|The callback function before the ok event is triggered. If false is returned, subsequent events will not be triggered, and done can also be used to close asynchronously.|`(  done: (closed: boolean) => void) => void \| boolean \| Promise<void \| boolean>`|`-`||
-|on-before-cancel|The callback function before the cancel event is triggered. If it returns false, no subsequent events will be triggered.|`() => boolean`|`-`||
+|on-before-cancel|The callback function before the cancel event is triggered. Returning false or resolving false prevents subsequent events; undefined is treated as false. Promise is supported.|`() => boolean \| void \| Promise<boolean \| void>`|`-`||
 |esc-to-close|Whether to support the ESC key to close the dialog|`boolean`|`true`|2.15.0|
 |render-to-body|Whether the drawer is mounted under the `body` element|`boolean`|`true`||
 |header|Whether to display high-quality content|`boolean`|`true`|2.33.0|
@@ -114,7 +135,7 @@ Drawer._context = app._context;
 |onOk|Triggered when the OK button is clicked|`(e?: Event) => void`|`-`||
 |onCancel|Triggered when the cancel or close button is clicked|`(e?: Event) => void`|`-`||
 |onBeforeOk|The callback function before the ok event is triggered. If false is returned, subsequent events will not be triggered, and done can also be used to close asynchronously.|`(    done: (closed: boolean) => void  ) => void \| boolean \| Promise<void \| boolean>`|`-`||
-|onBeforeCancel|The callback function before the cancel event is triggered. If it returns false, no subsequent events will be triggered.|`() => boolean`|`-`||
+|onBeforeCancel|The callback function before the cancel event is triggered. Returning false or resolving false prevents subsequent events; undefined is treated as false. Promise is supported.|`() => boolean \| void \| Promise<boolean \| void>`|`-`||
 |onOpen|Triggered after the drawer is opened (the animation ends)|`() => void`|`-`||
 |onClose|Triggered when the drawer is closed (the animation ends)|`() => void`|`-`||
 |onBeforeOpen|Triggered before drawer is opened|`() => void`|`-`|2.43.0|

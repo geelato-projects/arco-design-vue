@@ -24,6 +24,10 @@ description: 在当前页面打开一个浮层，承载相关操作。
 
 @import ./__demo__/fullscreen.md
 
+## 全局弹窗行为与关闭守卫
+
+Modal 与 Drawer 共用 `setDialogBehaviorReader` / `useDialogCloseGuard`：全局偏好按事件拉取，业务 props 只能收紧；内容组件注册的守卫在未显式传入 `onBeforeCancel` 时生效。用法见 Drawer 文档同名章节。
+
 ## API
 
 
@@ -56,7 +60,7 @@ description: 在当前页面打开一个浮层，承载相关操作。
 |modal-class|对话框的类名|`string \| any[]`|`-`||
 |modal-style|对话框的样式|`CSSProperties`|`-`||
 |on-before-ok|触发 ok 事件前的回调函数。如果返回 false 则不会触发后续事件，也可使用 done 进行异步关闭。|`(  done: (closed: boolean) => void) => void \| boolean \| Promise<void \| boolean>`|`-`|2.7.0|
-|on-before-cancel|触发 cancel 事件前的回调函数。如果返回 false 则不会触发后续事件。|`() => boolean`|`-`|2.7.0|
+|on-before-cancel|触发 cancel 事件前的回调函数。返回 false 或 resolve false 则不会触发后续事件；返回 undefined 视为 false；支持 Promise。|`() => boolean \| void \| Promise<boolean \| void>`|`-`|2.7.0|
 |esc-to-close|是否支持 ESC 键关闭对话框|`boolean`|`true`|2.15.0|
 |draggable|是否支持拖动|`boolean`|`false`|2.19.0|
 |fullscreen|是否开启全屏|`boolean`|`false`|2.19.0|
@@ -128,7 +132,7 @@ Modal._context = app._context;
 |onOk|点击确定按钮的回调函数|`(e?: Event) => void`|`-`||
 |onCancel|点击取消按钮的回调函数|`(e?: Event) => void`|`-`||
 |onBeforeOk|触发 ok 事件前的回调函数。如果返回 false 则不会触发后续事件，也可使用 done 进行异步关闭。|`(    done: (closed: boolean) => void  ) => void \| boolean \| Promise<void \| boolean>`|`-`|2.7.0|
-|onBeforeCancel|触发 cancel 事件前的回调函数。如果返回 false 则不会触发后续事件。|`() => boolean`|`-`|2.7.0|
+|onBeforeCancel|触发 cancel 事件前的回调函数。返回 false 或 resolve false 则不会触发后续事件；返回 undefined 视为 false；支持 Promise。|`() => boolean \| void \| Promise<boolean \| void>`|`-`|2.7.0|
 |onOpen|对话框打开后（动画结束）触发|`() => void`|`-`||
 |onClose|对话框关闭后（动画结束）触发|`() => void`|`-`||
 |onBeforeOpen|对话框打开前触发|`() => void`|`-`|2.16.0|

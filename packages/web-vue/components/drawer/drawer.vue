@@ -32,6 +32,18 @@
             ]"
             :style="style"
           >
+            <div
+              v-if="floatingClose"
+              tabindex="-1"
+              role="button"
+              aria-label="Close"
+              :class="`${prefixCls}-floating-close-btn`"
+              @click="handleCancel"
+            >
+              <icon-hover>
+                <icon-close />
+              </icon-hover>
+            </div>
             <div v-if="header" :class="`${prefixCls}-header`">
               <slot name="header">
                 <div v-if="$slots.title || title" :class="`${prefixCls}-title`">
@@ -119,6 +131,9 @@ import usePopupManager from '../_hooks/use-popup-manager';
 import { isBoolean, isFunction, isNumber, isPromise } from '../_utils/is';
 import { KEYBOARD_KEY } from '../_utils/keyboard';
 import { useTeleportContainer } from '../_hooks/use-teleport-container';
+import { resolveDialogBehavior } from '../_utils/dialog-behavior';
+import { useDialogCloseGuardProvider } from '../_hooks/use-dialog-close-guard';
+import { useDialogCancel } from '../_hooks/use-dialog-cancel';
 
 const DRAWER_PLACEMENTS = ['top', 'right', 'bottom', 'left'] as const;
 type DrawerPlacements = (typeof DRAWER_PLACEMENTS)[number];
@@ -294,7 +309,9 @@ export default defineComponent({
      * @en The callback function before the cancel event is triggered. If it returns false, no subsequent events will be triggered.
      */
     onBeforeCancel: {
-      type: Function as PropType<() => boolean>,
+      type: Function as PropType<
+        () => boolean | void | Promise<boolean | void>
+      >,
     },
     /**
      * @zh 是否支持 ESC 键关闭抽屉
@@ -432,16 +449,39 @@ export default defineComponent({
 
     const mounted = ref(computedVisible.value);
 
+    // 事件路径不走 computed 缓存：宿主的偏好来源未必是响应式的。
+    const escToCloseNow = () =>
+      props.escToClose && resolveDialogBehavior().escToClose;
+    const maskClosableNow = () =>
+      props.maskClosable && resolveDialogBehavior().maskClosable;
+
+    const mergedEscToClose = computed(escToCloseNow);
+    const mergedMaskClosable = computed(maskClosableNow);
+
+    const authoredZeroExit = computed(
+      () => !props.escToClose && !(props.mask && props.maskClosable)
+    );
+    const prefTookLastExit = computed(
+      () =>
+        !authoredZeroExit.value &&
+        !mergedEscToClose.value &&
+        !(props.mask && mergedMaskClosable.value)
+    );
+    const hasHeaderClose = computed(() => props.closable && props.header);
+    const floatingClose = computed(
+      () => prefTookLastExit.value && props.closable && !hasHeaderClose.value
+    );
+
     let globalKeyDownListener = false;
 
     const handleGlobalKeyDown = (ev: KeyboardEvent) => {
-      if (props.escToClose && ev.key === KEYBOARD_KEY.ESC && isLastDialog()) {
+      if (escToCloseNow() && ev.key === KEYBOARD_KEY.ESC && isLastDialog()) {
         handleCancel(ev);
       }
     };
 
     const addGlobalKeyDownListener = () => {
-      if (props.escToClose && !globalKeyDownListener) {
+      if (!globalKeyDownListener) {
         globalKeyDownListener = true;
         on(document.documentElement, 'keydown', handleGlobalKeyDown);
       }
@@ -511,16 +551,16 @@ export default defineComponent({
       }
     };
 
-    const handleCancel = (e: Event) => {
-      let result = true;
-      if (isFunction(props.onBeforeCancel)) {
-        result = props.onBeforeCancel() ?? false;
-      }
-      if (result) {
+    const runGuards = useDialogCloseGuardProvider();
+
+    const handleCancel = useDialogCancel({
+      getBeforeCancel: () => props.onBeforeCancel,
+      runGuards,
+      onCancel: (e: Event) => {
         emit('cancel', e);
         close();
-      }
-    };
+      },
+    });
 
     const toggleFullscreen = () => {
       const next = !mergedFullscreen.value;
@@ -529,7 +569,7 @@ export default defineComponent({
     };
 
     const handleMask = (e: Event) => {
-      if (props.maskClosable) {
+      if (maskClosableNow()) {
         handleCancel(e);
       }
     };
@@ -619,6 +659,7 @@ export default defineComponent({
       teleportContainer,
       mergedFullscreen,
       toggleFullscreen,
+      floatingClose,
     };
   },
 });

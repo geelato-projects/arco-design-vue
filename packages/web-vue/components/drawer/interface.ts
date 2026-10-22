@@ -110,7 +110,7 @@ export interface DrawerConfig {
    * @zh 触发 cancel 事件前的回调函数。如果返回 false 则不会触发后续事件。
    * @en The callback function before the cancel event is triggered. If it returns false, no subsequent events will be triggered.
    */
-  onBeforeCancel?: () => boolean;
+  onBeforeCancel?: () => boolean | void | Promise<boolean | void>;
   /**
    * @zh 抽屉打开后（动画结束）触发
    * @en Triggered after the drawer is opened (the animation ends)

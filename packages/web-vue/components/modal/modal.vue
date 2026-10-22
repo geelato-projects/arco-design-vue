@@ -36,6 +36,18 @@
               :style="mergedModalStyle"
             >
               <div
+                v-if="floatingClose"
+                tabindex="-1"
+                role="button"
+                aria-label="Close"
+                :class="`${prefixCls}-floating-close-btn`"
+                @click="handleCancel"
+              >
+                <icon-hover>
+                  <icon-close />
+                </icon-hover>
+              </div>
+              <div
                 v-if="!hideTitle && ($slots.title || title || closable)"
                 :class="`${prefixCls}-header`"
                 @mousedown="handleMoveDown"
@@ -145,6 +157,9 @@ import { isBoolean, isFunction, isNumber, isPromise } from '../_utils/is';
 import { KEYBOARD_KEY } from '../_utils/keyboard';
 import { useDraggable } from './hooks/use-draggable';
 import { useTeleportContainer } from '../_hooks/use-teleport-container';
+import { resolveDialogBehavior } from '../_utils/dialog-behavior';
+import { useDialogCloseGuardProvider } from '../_hooks/use-dialog-close-guard';
+import { useDialogCancel } from '../_hooks/use-dialog-cancel';
 
 export default defineComponent({
   name: 'Modal',
@@ -369,7 +384,9 @@ export default defineComponent({
      * @version 2.7.0
      */
     onBeforeCancel: {
-      type: Function as PropType<() => boolean>,
+      type: Function as PropType<
+        () => boolean | void | Promise<boolean | void>
+      >,
     },
     /**
      * @zh 是否支持 ESC 键关闭对话框
@@ -546,16 +563,41 @@ export default defineComponent({
       visible: computedVisible,
     });
 
+    // 事件路径不走 computed 缓存：宿主的偏好来源未必是响应式的。
+    const escToCloseNow = () =>
+      props.escToClose && resolveDialogBehavior().escToClose;
+    const maskClosableNow = () =>
+      props.maskClosable && resolveDialogBehavior().maskClosable;
+
+    const mergedEscToClose = computed(escToCloseNow);
+    const mergedMaskClosable = computed(maskClosableNow);
+
+    const authoredZeroExit = computed(
+      () => !props.escToClose && !(props.mask && props.maskClosable)
+    );
+    const prefTookLastExit = computed(
+      () =>
+        !authoredZeroExit.value &&
+        !mergedEscToClose.value &&
+        !(props.mask && mergedMaskClosable.value)
+    );
+    const hasHeaderClose = computed(
+      () => props.closable && !props.simple && !props.hideTitle
+    );
+    const floatingClose = computed(
+      () => prefTookLastExit.value && props.closable && !hasHeaderClose.value
+    );
+
     let globalKeyDownListener = false;
 
     const handleGlobalKeyDown = (ev: KeyboardEvent) => {
-      if (props.escToClose && ev.key === KEYBOARD_KEY.ESC && isLastDialog()) {
+      if (escToCloseNow() && ev.key === KEYBOARD_KEY.ESC && isLastDialog()) {
         handleCancel(ev);
       }
     };
 
     const addGlobalKeyDownListener = () => {
-      if (props.escToClose && !globalKeyDownListener) {
+      if (!globalKeyDownListener) {
         globalKeyDownListener = true;
         on(document.documentElement, 'keydown', handleGlobalKeyDown);
       }
@@ -623,16 +665,16 @@ export default defineComponent({
       }
     };
 
-    const handleCancel = (e: Event) => {
-      let result = true;
-      if (isFunction(props.onBeforeCancel)) {
-        result = props.onBeforeCancel() ?? false;
-      }
-      if (result) {
+    const runGuards = useDialogCloseGuardProvider();
+
+    const handleCancel = useDialogCancel({
+      getBeforeCancel: () => props.onBeforeCancel,
+      runGuards,
+      onCancel: (e: Event) => {
         emit('cancel', e);
         close();
-      }
-    };
+      },
+    });
 
     const currentIsMask = ref(false);
 
@@ -643,7 +685,7 @@ export default defineComponent({
     };
 
     const handleMaskClick = (e: Event) => {
-      if (props.mask && props.maskClosable && currentIsMask.value) {
+      if (props.mask && maskClosableNow() && currentIsMask.value) {
         handleCancel(e);
       }
     };
@@ -678,9 +720,7 @@ export default defineComponent({
       containerRef.value = getElement(props.popupContainer);
       if (computedVisible.value) {
         setOverflowHidden();
-        if (props.escToClose) {
-          addGlobalKeyDownListener();
-        }
+        addGlobalKeyDownListener();
       }
     });
 
@@ -781,6 +821,7 @@ export default defineComponent({
       handleMoveDown,
       mergedFullscreen,
       toggleFullscreen,
+      floatingClose,
     };
   },
 });

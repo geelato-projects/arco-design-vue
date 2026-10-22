@@ -18,6 +18,27 @@ description: 触发命令后，从屏幕一侧滑出的抽屉式的面板。
 
 @import ./__demo__/function.md
 
+## 全局弹窗行为与关闭守卫
+
+宿主可注册一次弹窗行为读取器，Drawer/Modal 在每次 ESC、遮罩事件时读取当前值，不做注册时快照：
+
+```ts
+import { setDialogBehaviorReader } from '@geelato/web-vue';
+
+setDialogBehaviorReader(() => ({ escToClose, maskClosable }));
+```
+
+业务 props 与全局偏好是 AND 关系：显式 `false` 始终有效，显式 `true` 不会放宽全局偏好；传入 `null` 恢复库默认。
+
+内容组件内可注册关闭守卫，ESC、遮罩与关闭按钮统一经过守卫；显式传入 `onBeforeCancel` 时守卫整体让位：
+
+```ts
+import { useDialogCloseGuard } from '@geelato/web-vue';
+
+const guard = useDialogCloseGuard();
+guard?.register(() => !dirty);
+```
+
 ## API
 
 
@@ -45,7 +66,7 @@ description: 触发命令后，从屏幕一侧滑出的抽屉式的面板。
 |body-class|抽屉内容部分的类名|`string \| any[]`|`-`|2.57.0|
 |body-style|抽屉内容部分的样式|`StyleValue`|`-`|2.57.0|
 |on-before-ok|触发 ok 事件前的回调函数。如果返回 false 则不会触发后续事件，也可使用 done 进行异步关闭。|`(  done: (closed: boolean) => void) => void \| boolean \| Promise<void \| boolean>`|`-`||
-|on-before-cancel|触发 cancel 事件前的回调函数。如果返回 false 则不会触发后续事件。|`() => boolean`|`-`||
+|on-before-cancel|触发 cancel 事件前的回调函数。返回 false 或 resolve false 则不会触发后续事件；返回 undefined 视为 false；支持 Promise。|`() => boolean \| void \| Promise<boolean \| void>`|`-`||
 |esc-to-close|是否支持 ESC 键关闭抽屉|`boolean`|`true`|2.15.0|
 |render-to-body|抽屉是否挂载在 `body` 元素下|`boolean`|`true`||
 |header|是否展示头部内容|`boolean`|`true`|2.33.0|
@@ -112,7 +133,7 @@ Drawer._context = app._context;
 |onOk|点击确定按钮时触发|`(e?: Event) => void`|`-`||
 |onCancel|点击取消、关闭按钮时触发|`(e?: Event) => void`|`-`||
 |onBeforeOk|触发 ok 事件前的回调函数。如果返回 false 则不会触发后续事件，也可使用 done 进行异步关闭。|`(    done: (closed: boolean) => void  ) => void \| boolean \| Promise<void \| boolean>`|`-`||
-|onBeforeCancel|触发 cancel 事件前的回调函数。如果返回 false 则不会触发后续事件。|`() => boolean`|`-`||
+|onBeforeCancel|触发 cancel 事件前的回调函数。返回 false 或 resolve false 则不会触发后续事件；返回 undefined 视为 false；支持 Promise。|`() => boolean \| void \| Promise<boolean \| void>`|`-`||
 |onOpen|抽屉打开后（动画结束）触发|`() => void`|`-`||
 |onClose|抽屉关闭后（动画结束）触发|`() => void`|`-`||
 |onBeforeOpen|抽屉打开前触发|`() => void`|`-`|2.43.0|

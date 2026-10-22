@@ -8,6 +8,7 @@ exports[`Drawer should render Drawer 1`] = `
   </transition-stub>
   <transition-stub name=\\"slide-right-drawer\\" appear=\\"true\\" persisted=\\"true\\" css=\\"true\\">
     <div class=\\"arco-drawer\\" style=\\"right: 0px; width: 250px; display: none;\\">
+      <!--v-if-->
       <div class=\\"arco-drawer-header\\">
         <div class=\\"arco-drawer-title\\">Title</div>
         <!--v-if-->

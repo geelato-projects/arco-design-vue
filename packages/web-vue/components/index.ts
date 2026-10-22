@@ -340,5 +340,18 @@ export { default as Watermark } from './watermark';
 export type { WatermarkInstance } from './watermark';
 // hooks
 export { useFormItem } from './_hooks/use-form-item';
+export {
+  DIALOG_CLOSE_GUARD_KEY,
+  useDialogCloseGuard,
+} from './_hooks/use-dialog-close-guard';
+export type {
+  DialogCloseGuard,
+  DialogCloseGuardContext,
+} from './_hooks/use-dialog-close-guard';
+export {
+  resolveDialogBehavior,
+  setDialogBehaviorReader,
+} from './_utils/dialog-behavior';
+export type { DialogBehavior } from './_utils/dialog-behavior';
 // components.d.ts
 export type {} from './components';
